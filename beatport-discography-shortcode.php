@@ -70,7 +70,7 @@ class BeatportDiscography_shortcode {
 		$output = '';
 
 
-		$json = file_get_contents('http://api.beatport.com/catalog/3/releases?facets[]=performerName:Federico+Giust&publishDateStart=2000-02-06&sortBy=publishDate%20desc&perPage=100');        
+		$json = file_get_contents('http://api.beatport.com/catalog/3/releases?facets[]=performerName:' . str_replace(' ', '+', $atts['artist']) . '&publishDateStart=2000-02-06&sortBy=publishDate%20desc&perPage=100');        
 		$data = json_decode($json);
 		$dataArray = (array) $data;
 		
