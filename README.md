@@ -7,11 +7,11 @@ As soon as a release is out on beatport it will be on the list.
 
 It's very easy to use:
 
-1 - Install the plugin
-2 - Activate
-3 - Create a new post or page
-4 - Click the icon with the green Beatport logo on the toolbar
-5 - Type in your artist name, or the artist name you want to show the discography on your wordpress site.
+- Install the plugin
+- Activate
+- Create a new post or page
+- Click the icon with the green Beatport logo on the toolbar
+- Type in your artist name, or the artist name you want to show the discography on your wordpress site.
 
 Done.
 
