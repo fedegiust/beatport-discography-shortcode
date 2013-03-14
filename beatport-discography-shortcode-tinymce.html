@@ -3,6 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Beatport Discography Shortcode</title>
+	<script type="text/javascript" src="../../../wp-includes/js/jquery/jquery.js"></script>
 	<script type="text/javascript">
 	// <![CDATA[
 		!function(){
@@ -15,12 +16,25 @@
 				};
 
 			// Load CSS and JS
-			loadCSS(data.pluginsUrl + '/beatport_discography_shortcode/bootstrap-1.4.0.min.css?v=' + data.pluginVersion);
+			loadCSS(data.pluginsUrl + '/beatport-discography-shortcode/bootstrap-1.4.0.min.css');
 			loadJS(data.includesUrl + 'js/tinymce/tiny_mce_popup.js?v=' + data.pluginVersion);
 		}();
 	// ]]> 
 	</script>
 	<script type="text/javascript">
+		jQuery(document).ready(function(){
+			jQuery('.labelfeed').prop('disabled', true);
+
+			jQuery('#artistfeed').click(function(){
+				jQuery('.labelfeed').prop('disabled', true);
+				jQuery('.artistfeed').prop('disabled', false);
+			});
+			jQuery('#labelfeed').click(function(){
+				jQuery('.labelfeed').prop('disabled', false);
+				jQuery('.artistfeed').prop('disabled', true);
+			});
+
+		});
 	// <![CDATA[
 		tinyMCEPopup.onInit.add(function(ed) {
 				var form = window.document.forms[0],
@@ -50,7 +64,7 @@
 						inputValue = input.value;
 
 						// Video URL or ID validation
-						if (inputName == "artist" && isEmpty(inputValue)){
+						if ((inputName == "artist" && isEmpty(inputValue)) || (inputName == "labelid" && isEmpty(inputValue)) ){
 							alert("You need to introduce an artist name.");
 							return false;
 						}
@@ -90,6 +104,7 @@
     	.form-stacked .inputs-list:first-child {padding-top:0;}
     	.form-stacked .deprecated{font-style:italic;color:orange}
     	.form-stacked .required{color:red}
+    	.labelfeed {display: none;}
 	</style>
 </head>
 <body>
@@ -97,32 +112,51 @@
 	<form class="form-stacked" action="#">
 
 		<fieldset>
-			<legend>Videos</legend>
+			<legend>Beatport Discography</legend>
+			<p>The minimum required fields are: Artist Name or Record Label Id</p>
+			<ul class="inputs-list">
+				<li>
+					<label>
+						<span class="span2">Artist</span>
+						<input type="radio" name="feedtype" id="artistfeed" value="artist" checked="checked"/>
+					</label>
+				</li>
+				<li>
+					<label>
+						<span class="span2">Record Label</span>
+						<input type="radio" name="feedtype" id="labelfeed" value="label"/>
+					</label>
+				</li>
+			</ul>	
+			
+
 			<div class="clearfix">
 				<ul class="inputs-list">
 					<li>
 						<label>
 							<span class="span2">Artist Name <span class="required">*</span></span>
-							<input type="text" name="artist" class="span4"/>
+							<input type="text" name="artist" id="artist" class="span4 artistfeed"/>
 							<span class="help-inline">Artist name exactly as it appears on Beatport.</span>
 						</label>
 					</li>
-<!-- 					<li>
+ 					<li>
 						<label>
-							<span class="span2">Playlist</span>
-							<input type="text" name="playlist" class="span4"/>
-							<span class="help-inline">A comma-separated list of video IDs to play.</span>
-						</label>
-					</li> -->
-					<!--
-					<li>
-						<label>
-							<span class="span2">List</span>
-							<input type="text" name="list" class="span4"/>
-							<span class="help-inline">Playlist ID, search query or user.</span>
+							<span class="span2">Label Id</span>
+							<input type="text" name="labelid" id="labelid" class="span4 labelfeed"/>
+							<span class="help-inline">Record Label Id.</span>
 						</label>
 					</li>
+					
 					<li>
+						<label>
+							<span class="span2">Label Name</span>
+							<input type="text" name="labelname" id="labelname" class="span4 labelfeed"/>
+							<span class="help-inline">Record Label Name (optional).</span>
+						</label>
+					</li>
+					<!--
+					<li>
+					
 						<label>
 							<span class="span2">ListType</span>
 							<select name="listType">
