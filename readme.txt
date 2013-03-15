@@ -1,10 +1,8 @@
 === Plugin Name ===
-Contributors: fgiustdj@gmail.com
-
 Tags: beatport, discography, artist, dj, digital, electronic, music
 Requires at least: 3.4
 Tested up to: 3.4
-Stable tag: trunk
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +63,9 @@ After the plugin is active, there will be a new icon on the text editor toolbar.
 4. Public view of the post
 
 == Changelog ==
+
+= 1.0.1 =
+* Bug fixes
 
 = 1.0 =
 * First release

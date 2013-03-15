@@ -3,7 +3,7 @@
 Plugin Name: Beatport Discography shortcode
 Plugin URI: http://www.federicogiust.com/
 Description: Embed Beatport Discography using shortcodes
-Version: 1.0
+Version: 1.0.1
 Author: Federico Giust
 Author URI: http://www.federicogiust.com
 License: GPL2
@@ -62,15 +62,32 @@ class BeatportDiscography_shortcode {
 
 		extract( shortcode_atts( array(
 			// custom parameters
-			'artist' => ''
-   
+			'feed' => '',
+			'artist' => '',
+			'labelid' => '',
+   			'items' => ''
+
 		), $atts ) );
 
 		// HTML OUTPUT
 		$output = '';
 
+		$url = 'http://api.beatport.com/catalog/3/';
 
-		$json = file_get_contents('http://api.beatport.com/catalog/3/releases?facets[]=performerName:' . str_replace(' ', '+', $atts['artist']) . '&publishDateStart=2000-02-06&sortBy=publishDate%20desc&perPage=100');        
+		if($atts['items'] == 'releases'){
+			$url .= 'release';
+		}else{
+			$url .= 'tracks';
+		}
+
+		if($atts['feed'] == 'artist'){
+			$url .= '';
+			$qrystring = '?facets[]=performerName:' . str_replace(' ', '+', $atts['artist']) . '&publishDateStart=2000-02-06&sortBy=publishDate%20desc&perPage=100';
+		}else{
+			$url .= 'labels';
+			$qrystring = '?facets[]=label:' . $atts['labelid'] . '&publishDateStart=2000-02-06&sortBy=publishDate%20desc&perPage=100';
+		}
+		$json = file_get_contents( $url . $qrystring);        
 		$data = json_decode($json);
 		$dataArray = (array) $data;
 		
