@@ -42,6 +42,7 @@ class BeatportDiscography_shortcode {
 			add_shortcode('beatport_discography_sc', array($this, 'output_html'));
 			// Add css to the output
 			add_action('wp_enqueue_scripts', array($this, 'output_css'));
+			add_action('wp_enqueue_scripts', array($this, 'output_js'));
 		}
 		// Allow the button to appear on any rich text editor (i.e. text editor in a widget)
 		else
@@ -59,6 +60,12 @@ class BeatportDiscography_shortcode {
 	{
 		wp_register_style('BeatportDiscographyShortcode', plugins_url('beatport-discography-shortcode.css', __FILE__));
 		wp_enqueue_style('BeatportDiscographyShortcode');
+	}
+	
+	function output_js()
+	{
+		wp_register_script('BeatportDiscographyShortcode', plugins_url('soundmanager2-nodebug-jsmin.js', __FILE__));
+		wp_enqueue_script('BeatportDiscographyShortcode');
 	}
 
 	/**
