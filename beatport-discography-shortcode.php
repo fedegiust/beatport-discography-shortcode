@@ -64,7 +64,8 @@ class BeatportDiscography_shortcode {
 	
 	function output_js()
 	{
-		wp_register_script('BeatportDiscographyShortcode', plugins_url('soundmanager2-nodebug-jsmin.js', __FILE__));
+
+		wp_register_script('BeatportDiscographyShortcode', plugins_url('soundManager.js', __FILE__), array( 'jquery' ));
 		wp_enqueue_script('BeatportDiscographyShortcode');
 	}
 
@@ -88,7 +89,9 @@ class BeatportDiscography_shortcode {
 				$output .= '<li class="releaserow">' . PHP_EOL;
 				$output .= '<div id="release' . $dataArray['results'][$i] -> catalogNumber . '" class="release">' . PHP_EOL;
 				$output .= '<div class="releaseart">' . PHP_EOL;
+				
 				$output .= '<img src="' . $dataArray['results'][$i] -> images -> medium -> url . '"/>' . PHP_EOL;
+
 				$output .= '</div>' . PHP_EOL;
 				$output .= '<div class="releaseinfo">' . PHP_EOL;
 				$output .= '<span class="releasename">' . PHP_EOL;
@@ -127,7 +130,9 @@ class BeatportDiscography_shortcode {
 				$output .= '<li class="releaserow">' . PHP_EOL;
 				$output .= '<div id="release' . $dataArray['results'][$i] -> catalogNumber . '" class="release">' . PHP_EOL;
 				$output .= '<div class="releaseart">' . PHP_EOL;
+				$output .= '<a href="' . $dataArray['results'][$i] -> sampleUrl . '" class="beatportsample">' . PHP_EOL;
 				$output .= '<img src="' . $dataArray['results'][$i] -> images -> medium -> url . '"/>' . PHP_EOL;
+				$output .= '</a>';
 				$output .= '</div>' . PHP_EOL;
 				$output .= '<div class="releaseinfo">' . PHP_EOL;
 				$output .= '<span class="releasename">' . PHP_EOL;
