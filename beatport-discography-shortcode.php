@@ -3,7 +3,7 @@
 Plugin Name: Beatport Discography shortcode
 Plugin URI: http://www.federicogiust.com/
 Description: Embed Beatport Discography using shortcodes
-Version: 1.0.1
+Version: 1.1.0
 Author: Federico Giust
 Author URI: http://www.federicogiust.com
 License: GPL2
@@ -24,7 +24,7 @@ if (!class_exists('BeatportDiscography_shortcode')):
 
 class BeatportDiscography_shortcode {
 
-	var $plugin_version = '100'; // version 1.0
+	var $plugin_version = '110'; // version 1.1.0
 
 	// Constructor / initialize plugin
 	function BeatportDiscography_shortcode()
@@ -32,8 +32,7 @@ class BeatportDiscography_shortcode {
 		// Load our shortcode only on the frontend
 		if ( !is_admin() )
 		{
-			// do_shortcode() is registered as a default filter on 'the_content' with a priority of 11.
-			// To make videos appear on post excerpts follow this guide: http://bloggingsquared.com/blogging-tips/make-shortcodes-work-in-all-wordpress-post-excerpts/
+			
 			add_shortcode('beatport_discography_sc', array($this, 'output_html'));
 			add_action('wp_enqueue_scripts', array($this, 'output_css'));
 		}
@@ -52,45 +51,11 @@ class BeatportDiscography_shortcode {
 	}
 
 
-	function output_html( $atts, $content = null )
-	{
+	function getRenderedFeed($items, $feed, array $dataArray){
+		// echo '<pre>';
+		// print_r($data);
+		// echo '</pre>';
 
-		if ( !isset($this->is_feed) )
-		{
-			$this->is_feed = is_feed();
-		}
-
-		extract( shortcode_atts( array(
-			// custom parameters
-			'feed' => '',
-			'artist' => '',
-			'labelid' => '',
-   			'items' => ''
-
-		), $atts ) );
-
-		// HTML OUTPUT
-		$output = '';
-
-		$url = 'http://api.beatport.com/catalog/3/';
-
-		if($atts['items'] == 'releases'){
-			$url .= 'release';
-		}else{
-			$url .= 'tracks';
-		}
-
-		if($atts['feed'] == 'artist'){
-			$url .= '';
-			$qrystring = '?facets[]=performerName:' . str_replace(' ', '+', $atts['artist']) . '&publishDateStart=2000-02-06&sortBy=publishDate%20desc&perPage=100';
-		}else{
-			$url .= 'labels';
-			$qrystring = '?facets[]=label:' . $atts['labelid'] . '&publishDateStart=2000-02-06&sortBy=publishDate%20desc&perPage=100';
-		}
-		$json = file_get_contents( $url . $qrystring);        
-		$data = json_decode($json);
-		$dataArray = (array) $data;
-		
 		$output .= '<ul class="releaselist">' . PHP_EOL;
 		for ($i = 0; $i < count($dataArray['results']); $i++){
 			$artistsTemp = (array) $dataArray['results'][$i] -> artists; 
@@ -126,6 +91,50 @@ class BeatportDiscography_shortcode {
 			$output .= '</li>' . PHP_EOL;
 		}
 		$output .= '</ul>' . PHP_EOL;
+		return $output;
+	}
+
+	function output_html( $atts, $content = null )
+	{
+
+		if ( !isset($this->is_feed) )
+		{
+			$this->is_feed = is_feed();
+		}
+
+		extract( shortcode_atts( array(
+			// custom parameters
+			'feed' => '',
+			'artist' => '',
+			'labelid' => '',
+   			'items' => ''
+
+		), $atts ) );
+
+		// HTML OUTPUT
+		$output = '';
+
+		$url = 'http://api.beatport.com/catalog/3/';
+
+		if($atts['items'] == 'releases'){
+			$url .= 'release';
+		}else{
+			$url .= 'tracks';
+		}
+
+		if($atts['feed'] == 'artist'){
+			$url .= '';
+			$qrystring = '?facets[]=performerName:' . str_replace(' ', '+', $atts['artist']) . '&publishDateStart=2000-02-06&sortBy=publishDate%20desc&perPage=100';
+			
+		}else{
+			$url .= 'labels';
+			$qrystring = '?facets[]=label:' . $atts['labelid'] . '&publishDateStart=2000-02-06&sortBy=publishDate%20desc&perPage=100';
+		}
+		$json = file_get_contents( $url . $qrystring);        
+		$data = json_decode($json);
+		$dataArray = (array) $data;
+
+		$output .= $this->getRenderedFeed($atts['items'], $atts['feed'], $dataArray);
 		return $output;
 
 	}
