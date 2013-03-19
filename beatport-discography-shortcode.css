@@ -1,6 +1,10 @@
 body {
     font-family: Verdana, Arial;
 }
+.release{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 .releaselist{
     list-style: none;
     padding: 0;
@@ -9,6 +13,7 @@ body {
 .releaserow{
     float: left;
     width: 480px;
+    border-bottom: 1px solid #ededed
 }
 .releaseart{
     float: left;
@@ -25,16 +30,11 @@ body {
     text-overflow: ellipsis;
     line-height: 1.3em;
 }
-
-
- a.sm2_link {}
- a.sm2_link:hover .coveroverlay { }
-
- a.sm2_playing {}
- a.sm2_playing:hover {}
-
- a.sm2_paused {}
- a.sm2_paused:hover {}
-
-
+.coveroverlay{
+    display: inline-block;
+    position: relative;
+    height: 60px;
+    width: 60px;
+    background: black;
+}
 

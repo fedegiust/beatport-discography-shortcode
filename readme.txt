@@ -2,7 +2,7 @@
 Tags: beatport, discography, artist, dj, digital, electronic, music
 Requires at least: 3.4
 Tested up to: 3.4
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,11 +35,6 @@ This version will get all releases with the following information
 
 This will be displayed on on or two columns depending on the page width.
 
-On next versions
-
-- User options to chose which data to display.
-- Links and admin panel in spanish
-
 == Installation ==
 
 This section describes how to install the plugin and get it working.
@@ -63,13 +58,13 @@ After the plugin is active, there will be a new icon on the text editor toolbar.
 4. Public view of the post
 
 == Changelog ==
+= 1.1.0 =
+* Option to fetch tracks or releases.
+* Option to fetch artist catalogue or label catalogue.
+* Option to play audio samples from beatport.com using SoundManager 2 when displaying tracks.
 
 = 1.0.1 =
 * Bug fixes
 
 = 1.0 =
 * First release
-
-== Arbitrary section ==
-
-== A brief Markdown Example ==

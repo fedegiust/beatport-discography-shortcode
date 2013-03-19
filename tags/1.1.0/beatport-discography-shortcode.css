@@ -9,6 +9,7 @@ body {
 .releaserow{
     float: left;
     width: 480px;
+    margin-bottom: 10px;
 }
 .releaseart{
     float: left;
@@ -25,8 +26,22 @@ body {
     text-overflow: ellipsis;
     line-height: 1.3em;
 }
+.coveroverlay {
+    display: none;
+    width: 100%;
+    height:100%;
+    background: black;
+    opacity: 1;
+}
 
+ a.sm2_link {}
+ a.sm2_link:hover .coveroverlay { display: block; }
 
+ a.sm2_playing {}
+ a.sm2_playing:hover {}
+
+ a.sm2_paused {}
+ a.sm2_paused:hover {}
 
 
 
