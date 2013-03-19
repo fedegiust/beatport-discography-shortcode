@@ -131,7 +131,9 @@ class BeatportDiscography_shortcode {
 				$output .= '<div id="release' . $dataArray['results'][$i] -> catalogNumber . '" class="release">' . PHP_EOL;
 				$output .= '<div class="releaseart">' . PHP_EOL;
 				$output .= '<a href="' . $dataArray['results'][$i] -> sampleUrl . '" class="beatportsample">' . PHP_EOL;
+				$output .= '<div class="coveroverlay">';
 				$output .= '<img src="' . $dataArray['results'][$i] -> images -> medium -> url . '"/>' . PHP_EOL;
+				$output .= '</div>';
 				$output .= '</a>';
 				$output .= '</div>' . PHP_EOL;
 				$output .= '<div class="releaseinfo">' . PHP_EOL;
@@ -216,8 +218,8 @@ class BeatportDiscography_shortcode {
 			$qrystring = '?facets[]=performerName:' . str_replace(' ', '+', $atts['artist']) . '&publishDateStart=2000-02-06&sortBy=publishDate%20desc&perPage=100';
 			
 		}else{
-			$url .= 'labels';
-			$qrystring = '?facets[]=labelId:' . str_replace(' ', '+', $atts['labelid']) . '&publishDateStart=2000-02-06&sortBy=publishDate%20desc&perPage=100';
+			$url .= '';
+			$qrystring = '?facets[]=labelName:' . str_replace(' ', '+', $atts['labelid']) . '&publishDateStart=2000-02-06&sortBy=publishDate%20desc&perPage=100';
 		}
 
 		$dataArray = $this->getData($url, $qrystring);

@@ -27,6 +27,14 @@ body {
 }
 
 
+ a.sm2_link {}
+ a.sm2_link:hover .coveroverlay { }
+
+ a.sm2_playing {}
+ a.sm2_playing:hover {}
+
+ a.sm2_paused {}
+ a.sm2_paused:hover {}
 
 
 
