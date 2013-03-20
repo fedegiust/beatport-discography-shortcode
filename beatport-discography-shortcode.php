@@ -130,17 +130,16 @@ class BeatportDiscography_shortcode {
 				$output .= '<li class="releaserow">' . PHP_EOL;
 				$output .= '<div id="release' . $dataArray['results'][$i] -> catalogNumber . '" class="release">' . PHP_EOL;
 				$output .= '<div class="releaseart">' . PHP_EOL;
-				
 				$output .= '<a href="' . $dataArray['results'][$i] -> sampleUrl . '" class="beatportsample">' . PHP_EOL;
-				$output .= '<span class="coveroverlay">';
+				$output .= '<div class="coveroverlay"></div>' . PHP_EOL;
+				
+				$output .= '</a>' . PHP_EOL;
 				$output .= '<img src="' . $dataArray['results'][$i] -> images -> medium -> url . '"/>' . PHP_EOL;
-				$output .= '</span>';
-				
-				$output .= '</a>';
-				
+								
 				$output .= '</div>' . PHP_EOL;
 				$output .= '<div class="releaseinfo">' . PHP_EOL;
 				$output .= '<span class="releasename">' . PHP_EOL;
+				
 				$output .= $dataArray['results'][$i] -> title . ' [' . $dataArray['results'][$i] -> length . ']' . PHP_EOL;
 				
 				$output .= '</span>' . PHP_EOL;

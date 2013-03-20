@@ -18,6 +18,8 @@ body {
 .releaseart{
     float: left;
     padding-right: 8px;
+    width: 60px;
+    height: 60px;
 }
 .releaseinfo{
     white-space: normal;
@@ -32,9 +34,17 @@ body {
 }
 .coveroverlay{
     display: inline-block;
-    position: relative;
+    position: absolute;
     height: 60px;
     width: 60px;
-    background: black;
+    background: white;
+    opacity: 0;
 }
+
+.coveroverlay:hover {
+    opacity: 0.3;
+    background-image: transparent url(image/icon_play.png) center center;
+    background-repeat: no-repeat;
+}
+
 
