@@ -43,8 +43,34 @@ body {
 
 .coveroverlay:hover {
     opacity: 0.3;
-    background-image: transparent url(image/icon_play.png) center center;
+    height: 60px;
+    width: 60px;
+
     background-repeat: no-repeat;
 }
-
+a.sm2_paused:hover .coveroverlay:hover,
+a.sm2_link:hover .coveroverlay:hover{
+ background-image:url(image/icon-play.png);
+ background-position:50% 50%;
+ background-repeat:no-repeat;
+ _background-image:url(image/icon-play.gif); /* IE 6 */
+}
+a.sm2_link:hover .coveroverlay:hover{
+ /* default hover color, if you'd like.. */
+ background-color:#003366;
+ color:#fff;
+}
+a.sm2_paused .coveroverlay{
+ background-color:#999;
+}
+a.sm2_paused:hover .coveroverlay:hover{
+ background:#003366 url(image/icon-play.png) no-repeat 50% 50%;
+ _background-image:url(image/icon-play.gif);
+}
+a.sm2_playing .coveroverlay,
+a.sm2_playing:hover .coveroverlay:hover{
+ background:#003366 url(image/icon-pause.png) no-repeat 50% 50%;
+ _background-image:url(image/icon-pause.gif);
+ text-decoration:none;
+}
 

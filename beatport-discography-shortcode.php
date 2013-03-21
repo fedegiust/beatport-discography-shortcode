@@ -134,6 +134,7 @@ class BeatportDiscography_shortcode {
 				$output .= '<div class="coveroverlay"></div>' . PHP_EOL;
 				
 				$output .= '</a>' . PHP_EOL;
+				
 				$output .= '<img src="' . $dataArray['results'][$i] -> images -> medium -> url . '"/>' . PHP_EOL;
 								
 				$output .= '</div>' . PHP_EOL;
