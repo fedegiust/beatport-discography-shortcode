@@ -67,7 +67,7 @@
 						inputValue = input.value;
 
 						// Artist Name 
-						if ((inputName == "labelid" && isEmpty(inputValue)) && (inputName == "artist" && isEmpty(inputValue)) ){
+						if ((inputName == "label" && isEmpty(inputValue)) && (inputName == "artist" && isEmpty(inputValue)) ){
 							alert("You need to introduce an artist name.");
 							return false;
 						}
@@ -138,16 +138,16 @@
 					<ul class="inputs-list">
 						<li>
 							<label>
-								<span class="span2">Artist Name <span class="required">*</span></span>
+								<span class="span2">Artist Name<span class="required">*</span></span>
 								<input type="text" name="artist" class="span4 artistfeed"/>
 								<span class="help-inline">Artist name exactly as it appears on Beatport.</span>
 							</label>
 						</li>
 						<li>
 							<label>
-								<span class="span2">Label Id<span class="required">*</span></span>
-								<input type="text" name="labelid" class="span4 labelfeed"/>
-								<span class="help-inline">Label id exactly as it appears on Beatport.</span>
+								<span class="span2">Label Name<span class="required">*</span></span>
+								<input type="text" name="label" class="span4 labelfeed"/>
+								<span class="help-inline">Label Name exactly as it appears on Beatport.</span>
 							</label>
 						</li>
 

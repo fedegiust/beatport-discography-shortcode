@@ -48,12 +48,29 @@ e.g.
 
 = How do I use it? =
 
-After the plugin is active, there will be a new icon on the text editor toolbar. So if you go to add a new page or post you will see this icon. If you click on it a new modal window will open asking for artist name. Click on insert shortcode after typing the artist name and all done.
+After the plugin is active, there will be a new icon on the text editor toolbar. So if you go to add a new page or post you will see the beatport green logo icon. If you click on it a new modal window will open asking for one of the following:
+1. Type of feed do you want:
+* Artist (Default)
+* Label
+2. Which artist or label do you want:
+* Artist Name (Default)
+* Label Name
+3. Type of catalogue you want:
+* Releases (Default)
+* Tracks
+
+One option of each group is required.
+
+After you filled out the form, click on insert shortcode and publish the page/post.
+
+= How does the sound player work? =
+
+The sound player works when fetching tracks from the api. It uses a JavaScript plugin called Sound Manager 2. When you hover over the track art, it shows an overlay over the cover and a play button. After clicking the mouse it will play the sample from Beatport.com and change the icon to a pause button.
 
 == Screenshots ==
 
 1. New button on toolbar
-2. Artist name form
+2. Form
 3. Shortcode on post or page
 4. Public view of the post
 

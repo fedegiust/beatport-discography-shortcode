@@ -200,7 +200,7 @@ class BeatportDiscography_shortcode {
 			// custom parameters
 			'feed' => '',
 			'artist' => '',
-			'labelid' => '',
+			'label' => '',
    			'items' => ''
 
 		), $atts ) );
@@ -222,7 +222,7 @@ class BeatportDiscography_shortcode {
 			
 		}else{
 			$url .= '';
-			$qrystring = '?facets[]=labelName:' . str_replace(' ', '+', $atts['labelid']) . '&publishDateStart=2000-02-06&sortBy=publishDate%20desc&perPage=100';
+			$qrystring = '?facets[]=labelName:' . str_replace(' ', '+', $atts['label']) . '&publishDateStart=2000-02-06&sortBy=publishDate%20desc&perPage=100';
 		}
 
 		$dataArray = $this->getData($url, $qrystring);
