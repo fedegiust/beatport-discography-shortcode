@@ -3,7 +3,7 @@
 Plugin Name: Beatport Discography shortcode
 Plugin URI: http://www.federicogiust.com/
 Description: Embed Beatport Discography using shortcodes
-Version: 1.1.0
+Version: 1.1.2
 Author: Federico Giust
 Author URI: http://www.federicogiust.com
 License: GPL2
@@ -24,7 +24,7 @@ if (!class_exists('BeatportDiscography_shortcode')):
 
 class BeatportDiscography_shortcode {
 
-	var $plugin_version = '110'; // version 1.1.0
+	var $plugin_version = '112'; // version 1.1.2
 
 	/**
 	* Constructor / Initialize the plugin
@@ -65,7 +65,7 @@ class BeatportDiscography_shortcode {
 	function output_js()
 	{
 
-		wp_register_script('BeatportDiscographyShortcode', plugins_url('soundManager.js', __FILE__), array( 'jquery' ));
+		wp_register_script('BeatportDiscographyShortcode', plugins_url('beatport-discography-shortcode.js', __FILE__), array( 'jquery' ));
 		wp_enqueue_script('BeatportDiscographyShortcode');
 	}
 
@@ -77,7 +77,7 @@ class BeatportDiscography_shortcode {
 	* $feed - Wich feed are we using, artist or label
 	* $dataArray - Array with the data we got from the API
 	*/
-	function getRenderedFeed($items, $feed, array $dataArray){
+	function getRenderedFeed($items, $feed, $soundPlayer, array $dataArray ){
 
 		$output .= '<ul class="releaselist">' . PHP_EOL;
 
@@ -130,11 +130,11 @@ class BeatportDiscography_shortcode {
 				$output .= '<li class="releaserow">' . PHP_EOL;
 				$output .= '<div id="release' . $dataArray['results'][$i] -> catalogNumber . '" class="release">' . PHP_EOL;
 				$output .= '<div class="releaseart">' . PHP_EOL;
-				$output .= '<a href="' . $dataArray['results'][$i] -> sampleUrl . '" class="beatportsample">' . PHP_EOL;
-				$output .= '<div class="coveroverlay"></div>' . PHP_EOL;
-				
-				$output .= '</a>' . PHP_EOL;
-				
+				if($soundPlayer === 'on'){
+					$output .= '<a href="' . $dataArray['results'][$i] -> sampleUrl . '" class="beatportsample">' . PHP_EOL;
+					$output .= '<div class="coveroverlay"></div>' . PHP_EOL;			
+					$output .= '</a>' . PHP_EOL;
+				}		
 				$output .= '<img src="' . $dataArray['results'][$i] -> images -> medium -> url . '"/>' . PHP_EOL;
 								
 				$output .= '</div>' . PHP_EOL;
@@ -201,8 +201,8 @@ class BeatportDiscography_shortcode {
 			'feed' => '',
 			'artist' => '',
 			'label' => '',
-   			'items' => ''
-
+   			'items' => '',
+   			'soundPlayer' => ''
 		), $atts ) );
 
 		// HTML OUTPUT
@@ -218,16 +218,16 @@ class BeatportDiscography_shortcode {
 
 		if($atts['feed'] == 'artist'){
 			$url .= '';
-			$qrystring = '?facets[]=performerName:' . str_replace(' ', '+', $atts['artist']) . '&publishDateStart=2000-02-06&sortBy=publishDate%20desc&perPage=100';
+			$qrystring = '?facets[]=performerName:' . str_replace(' ', '+', $atts['artist']) . '&sortBy=publishDate%20desc&perPage=150';
 			
 		}else{
 			$url .= '';
-			$qrystring = '?facets[]=labelName:' . str_replace(' ', '+', $atts['label']) . '&publishDateStart=2000-02-06&sortBy=publishDate%20desc&perPage=100';
+			$qrystring = '?facets[]=labelName:' . str_replace(' ', '+', $atts['label']) . '&sortBy=publishDate%20desc&perPage=150';
 		}
 
 		$dataArray = $this->getData($url, $qrystring);
 
-		$output .= $this->getRenderedFeed($atts['items'], $atts['feed'], $dataArray);
+		$output .= $this->getRenderedFeed($atts['items'], $atts['feed'], $atts['soundPlayer'], $dataArray);
 		return $output;
 
 	}

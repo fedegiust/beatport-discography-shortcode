@@ -25,6 +25,7 @@
 	// <![CDATA[
 		jQuery(document).ready(function(){
 			jQuery('.labelfeed').prop('disabled', true);
+			jQuery('#soundPlayer').prop('disabled', true);
 
 			jQuery('#artistfeed').click(function(){
 				jQuery('.labelfeed').val('');
@@ -36,6 +37,19 @@
 				jQuery('.labelfeed').prop('disabled', false);
 				jQuery('.artistfeed').prop('disabled', true);
 			});
+
+			jQuery('input[name=items]').click(function(){
+				if(jQuery(this).val() == 'releases'){
+					console.log(jQuery(this).val());
+					jQuery('#soundPlayer').removeAttr('checked');
+					jQuery('#soundPlayer').prop('disabled', true);
+				}else{
+					console.log(jQuery(this).val());
+					jQuery('#soundPlayer').prop('disabled', false);
+				}
+
+			});
+
 
 		});
 
@@ -114,6 +128,7 @@
 	<form class="form-stacked" action="#">
 		<fieldset>
 			<legend>Beatport Artist Discography Shortcode</legend>
+			<br />
 			<fieldset>
 				<legend>Select type of feed.</legend>
 				<ul class="inputs-list">
@@ -133,7 +148,7 @@
 			</fieldset>
 			<fieldset>
 				<legend></legend>
-				<p>The minimum required fields are: Artist Name or Record Label Id</p>
+				<p>The minimum required fields are: Artist Name or Record Label Name</p>
 				<div class="clearfix">
 					<ul class="inputs-list">
 						<li>
@@ -168,6 +183,13 @@
 						<label>
 							<span class="span2">Tracks</span>
 							<input type="radio" name="items" value="tracks"/>
+						</label>
+					</li>
+					<li>
+						<label>
+							<span class="span2">Sound Player</span>
+							<input type="checkbox" name="soundPlayer" id="soundPlayer"/>
+							<span class="help-inline">Uses Sound Manager 2 JavaScript plugin to play audio samples</span>
 						</label>
 					</li>
 			</ul>
