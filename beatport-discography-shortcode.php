@@ -69,6 +69,17 @@ class BeatportDiscography_shortcode {
 		wp_enqueue_script('BeatportDiscographyShortcode');
 	}
 
+	function getPagination($url, $nopages){
+
+		$pagination = '';
+
+		for($i = 1; $i <= $nopages; $i++){
+			$pagination .= '<a href="http://' . $url . '&page=' . $i . '">' . $i . '</a>' . PHP_EOL;
+		}
+
+		return $pagination;
+	}
+
 	/**
 	* Generate unordered list with the items from the feed.
 	* Depending on the type of items we want, we generate the corresponding list.
@@ -77,9 +88,16 @@ class BeatportDiscography_shortcode {
 	* $feed - Wich feed are we using, artist or label
 	* $dataArray - Array with the data we got from the API
 	*/
-	function getRenderedFeed($items, $feed, $soundPlayer, array $dataArray ){
+	function getRenderedFeed($items, $feed, $soundPlayer, $buylink = 'on', array $dataArray ){
 
+		if($dataArray['metadata'] -> totalPages > 1){
+			$output .= $this->getPagination($dataArray['metadata'] -> host . $dataArray['metadata'] -> path . '?' . $dataArray['metadata'] -> query, $dataArray['metadata'] -> totalPages);
+		}
+
+		$output .= '<div id="beatport-discography-results">' . PHP_EOL;
 		$output .= '<ul class="releaselist">' . PHP_EOL;
+
+
 
 		if($items == 'releases'){
 			/** If we want the releases we then use the releases object from the API (http://api.beatport.com/releases.html) */
@@ -112,8 +130,10 @@ class BeatportDiscography_shortcode {
 				$output .= '<span class="releasemoreinfo">' . PHP_EOL;
 				$output .= $dataArray['results'][$i] -> catalogNumber . ' | ';
 				$output .= $dataArray['results'][$i] -> label -> name . ' | ';
-				$output .= $dataArray['results'][$i] -> releaseDate . ' | ' . PHP_EOL;
-				$output .= '<a href="https://www.beatport.com/release/' . $dataArray['results'][$i] -> slug . '/' . $dataArray['results'][$i] -> id . '" target="_new">Buy</a>';
+				$output .= $dataArray['results'][$i] -> releaseDate . PHP_EOL;
+				if($buylink == 'on'){
+					$output .= ' | <a href="https://www.beatport.com/release/' . $dataArray['results'][$i] -> slug . '/' . $dataArray['results'][$i] -> id . '" target="_new">Buy</a>';
+				}
 				$output .= $dataArray['results'][$i] -> genres -> name;
 				$output .= '</span>' . PHP_EOL;
 				$output .= '</div>' . PHP_EOL;
@@ -130,7 +150,7 @@ class BeatportDiscography_shortcode {
 				$output .= '<li class="releaserow">' . PHP_EOL;
 				$output .= '<div id="release' . $dataArray['results'][$i] -> catalogNumber . '" class="release">' . PHP_EOL;
 				$output .= '<div class="releaseart">' . PHP_EOL;
-				if($soundPlayer === 'on'){
+				if($soundPlayer == 'on'){
 					$output .= '<a href="' . $dataArray['results'][$i] -> sampleUrl . '" class="beatportsample">' . PHP_EOL;
 					$output .= '<div class="coveroverlay"></div>' . PHP_EOL;			
 					$output .= '</a>' . PHP_EOL;
@@ -163,8 +183,10 @@ class BeatportDiscography_shortcode {
 				}
 				$output .= ' | ';		
 				$output .= $dataArray['results'][$i] -> label -> name . ' | ';
-				$output .= $dataArray['results'][$i] -> releaseDate . ' | ' . PHP_EOL;
-				$output .= '<a href="https://www.beatport.com/track/' . $dataArray['results'][$i] -> slug . '/' . $dataArray['results'][$i] -> id . '" target="_new">Buy</a>' . PHP_EOL;
+				$output .= $dataArray['results'][$i] -> releaseDate . PHP_EOL;
+				if($buylink == 'on'){
+					$output .= ' | <a href="https://www.beatport.com/track/' . $dataArray['results'][$i] -> slug . '/' . $dataArray['results'][$i] -> id . '" target="_new">Buy</a>' . PHP_EOL;
+				}
 				$output .= '</span>' . PHP_EOL;
 				$output .= '<br />' . PHP_EOL;
 
@@ -178,6 +200,7 @@ class BeatportDiscography_shortcode {
 		}
 
 		$output .= '</ul>' . PHP_EOL;
+		$output .= '</div>' . PHP_EOL;
 		return $output;
 	}
 
@@ -202,7 +225,9 @@ class BeatportDiscography_shortcode {
 			'artist' => '',
 			'label' => '',
    			'items' => '',
-   			'soundPlayer' => ''
+   			'soundplayer' => '',
+   			'buylink' => '',
+   			'perpage' => ''
 		), $atts ) );
 
 		// HTML OUTPUT
@@ -218,16 +243,16 @@ class BeatportDiscography_shortcode {
 
 		if($atts['feed'] == 'artist'){
 			$url .= '';
-			$qrystring = '?facets[]=performerName:' . str_replace(' ', '+', $atts['artist']) . '&sortBy=publishDate%20desc&perPage=150';
+			$qrystring = '?facets[]=performerName:' . str_replace(' ', '+', $atts['artist']) . '&sortBy=publishDate%20desc&perPage=' . $atts['perpage'];
 			
 		}else{
 			$url .= '';
-			$qrystring = '?facets[]=labelName:' . str_replace(' ', '+', $atts['label']) . '&sortBy=publishDate%20desc&perPage=150';
+			$qrystring = '?facets[]=labelName:' . str_replace(' ', '+', $atts['label']) . '&sortBy=publishDate%20desc&perPage=' . $atts['perpage'];
 		}
 
 		$dataArray = $this->getData($url, $qrystring);
 
-		$output .= $this->getRenderedFeed($atts['items'], $atts['feed'], $atts['soundPlayer'], $dataArray);
+		$output .= $this->getRenderedFeed($atts['items'], $atts['feed'], $atts['soundplayer'], $atts['buylink'], $dataArray);
 		return $output;
 
 	}
