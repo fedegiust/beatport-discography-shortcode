@@ -91,7 +91,7 @@ class BeatportDiscography_shortcode {
 	function getRenderedFeed($items, $feed, $soundPlayer, $buylink = 'on', array $dataArray ){
 
 		if($dataArray['metadata'] -> totalPages > 1){
-			$output .= $this->getPagination($dataArray['metadata'] -> host . $dataArray['metadata'] -> path . '?' . $dataArray['metadata'] -> query, $dataArray['metadata'] -> totalPages);
+			$output .= $this->getPagination($dataArray['metadata'] -> host . str_replace('catalog/', 'catalog/3/', $dataArray['metadata'] -> path) . '?' . $dataArray['metadata'] -> query, $dataArray['metadata'] -> totalPages);
 		}
 
 		$output .= '<div id="beatport-discography-results">' . PHP_EOL;
