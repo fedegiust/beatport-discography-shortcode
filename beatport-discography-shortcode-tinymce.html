@@ -4,6 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Beatport Discography Shortcode</title>
 	<script type="text/javascript" src="../../../wp-includes/js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="bootstrap-typeahead.js"></script>
 	<script type="text/javascript">
 	// <![CDATA[
 		!function(){
@@ -29,13 +30,72 @@
 
 			jQuery('#artistfeed').click(function(){
 				jQuery('.labelfeed').val('');
+				jQuery('.releasefeed').val('');
 				jQuery('.labelfeed').prop('disabled', true);
 				jQuery('.artistfeed').prop('disabled', false);
+				jQuery('.releasefeed').prop('disabled', true);
+				jQuery('.step-2').show();
+				jQuery('.step-3').hide();
+				jQuery('#soundPlayer').removeAttr('checked');
+				jQuery('#buylink').removeAttr('checked');
+				jQuery('input[name=items]').val('');
+				jQuery('input[name=items]').removeAttr('checked');
 			});
 			jQuery('#labelfeed').click(function(){
 				jQuery('.artistfeed').val('');
+				jQuery('.releasefeed').val('');
 				jQuery('.labelfeed').prop('disabled', false);
 				jQuery('.artistfeed').prop('disabled', true);
+				jQuery('.releasefeed').prop('disabled', true);
+				jQuery('.step-2').show();
+				jQuery('.step-3').hide();
+				jQuery('#soundPlayer').removeAttr('checked');
+				jQuery('#buylink').removeAttr('checked');
+				jQuery('input[name=items]').val('');
+				jQuery('input[name=items]').removeAttr('checked');
+			});
+
+			jQuery('#releasefeed').click(function(){
+				jQuery('.artistfeed').val('');
+				jQuery('.labelfeed').val('');
+				jQuery('.labelfeed').prop('disabled', true);
+				jQuery('.artistfeed').prop('disabled', true);
+				jQuery('.releasefeed').prop('disabled', false);
+				jQuery('.step-2').show();
+				jQuery('.step-3').hide();
+				jQuery('#soundPlayer').removeAttr('checked');
+				jQuery('#buylink').removeAttr('checked');
+				jQuery('input[name=items]').val('');
+				jQuery('input[name=items]').removeAttr('checked');
+				
+			});
+
+			jQuery('.artistfeed').blur(function(){
+				if(jQuery(this).val() != ''){
+					jQuery('.step-3').show();
+					jQuery('.artist-label-feed').show();
+				}else{
+					jQuery('.step-3').hide();
+				}
+			});
+
+			jQuery('.labelfeed').blur(function(){
+				if(jQuery(this).val() != ''){
+					jQuery('.step-3').show();
+					jQuery('.artist-label-feed').show();
+				}else{
+					jQuery('.step-3').hide();
+				}
+			});
+
+			jQuery('.releasefeed').blur(function(){
+				if(jQuery(this).val() != ''){
+					jQuery('.step-3').show();
+					jQuery('.artist-label-feed').hide();
+				}else{
+					jQuery('.step-3').hide();
+					jQuery('.artist-label-feed').show();
+				}
 			});
 
 			jQuery('input[name=items]').click(function(){
@@ -49,7 +109,6 @@
 				}
 
 			});
-
 
 		});
 
@@ -121,6 +180,8 @@
     	.form-stacked .inputs-list:first-child {padding-top:0;}
     	.form-stacked .deprecated{font-style:italic;color:orange}
     	.form-stacked .required{color:red}
+    	.step-2 { display: none;}
+    	.step-3 { display: none;}
 	</style>
 </head>
 <body>
@@ -129,8 +190,8 @@
 		<fieldset>
 			<legend>Beatport Artist Discography Shortcode</legend>
 			<br />
-			<fieldset>
-				<legend>Select type of feed.</legend>
+			<fieldset class="step-1">
+				<legend>Step 1 - Select type of feed.</legend>
 				<ul class="inputs-list">
 					<li>
 						<label>
@@ -144,10 +205,16 @@
 							<input type="radio" name="feed" id="labelfeed" value="label"/>
 						</label>
 					</li>
+					<li>
+						<label>
+							<span class="span2">Release (Detailed)</span>
+							<input type="radio" name="feed" id="releasefeed" value="release"/>
+						</label>
+					</li>
 				</ul>	
 			</fieldset>
-			<fieldset>
-				<legend></legend>
+			<fieldset class="step-2">
+				<legend>Step 2</legend>
 				<p>The minimum required fields are: Artist Name or Record Label Name</p>
 				<div class="clearfix">
 					<ul class="inputs-list">
@@ -165,30 +232,37 @@
 								<span class="help-inline">Label Name exactly as it appears on Beatport.</span>
 							</label>
 						</li>
+						<li>
+							<label>
+								<span class="span2">Release Id<span class="required">*</span></span>
+								<input type="text" name="label" class="span4 releasefeed"/>
+								<span class="help-inline">Release Id exactly as it appears on Beatport.</span>
+							</label>
+						</li>
 
 					</ul>
 				</div>
 			</fieldset>
 		</fieldset>
-		<fieldset>
-			<legend>Items you would like displayed</legend>
+		<fieldset class="step-3">
+			<legend>Step 3 - Items you would like displayed</legend>
 			<ul class="inputs-list">
-					<li>
+					<li class="artist-label-feed">
 						<label>
 							<span class="span2">Releases</span>
-							<input type="radio" name="items" value="releases" checked="checked"/>
+							<input type="radio" name="items" value="releases" />
 						</label>
 					</li>
-					<li>
+					<li class="artist-label-feed">
 						<label>
 							<span class="span2">Tracks</span>
-							<input type="radio" name="items" value="tracks"/>
+							<input type="radio" name="items" value="tracks" />
 						</label>
 					</li>
 					<li>
 						<label>
 							<span class="span2">Sound Player</span>
-							<input type="checkbox" name="soundplayer" id="soundPlayer"/>
+							<input type="checkbox" name="soundplayer" id="soundPlayer" />
 							<span class="help-inline">Uses Sound Manager 2 JavaScript plugin to play audio samples</span>
 						</label>
 					</li>
@@ -199,27 +273,6 @@
 							<span class="help-inline">Enable/Disable Buy on beatport.com link.</span>
 						</label>
 					</li>										
-					<fieldset>
-						<legend>Hits Per Page</legend>
-						<li>
-							<label>
-								<span class="span2">50</span>
-								<input type="radio" name="perpage" value="50"/>
-							</label>
-						</li>
-						<li>
-							<label>
-								<span class="span2">100</span>
-								<input type="radio" name="perpage" value="100"/>
-							</label>
-						</li>
-						<li>
-							<label>
-								<span class="span2">150</span>
-								<input type="radio" name="perpage" value="150"/>
-							</label>
-						</li>
-					</fieldset>
 
 			</ul>
 		</fieldset>

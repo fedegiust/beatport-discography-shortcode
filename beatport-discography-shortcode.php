@@ -69,17 +69,6 @@ class BeatportDiscography_shortcode {
 		wp_enqueue_script('BeatportDiscographyShortcode');
 	}
 
-	function getPagination($url, $nopages){
-
-		$pagination = '';
-
-		for($i = 1; $i <= $nopages; $i++){
-			$pagination .= '<a href="http://' . $url . '&page=' . $i . '">' . $i . '</a>' . PHP_EOL;
-		}
-
-		return $pagination;
-	}
-
 	/**
 	* Generate unordered list with the items from the feed.
 	* Depending on the type of items we want, we generate the corresponding list.
@@ -90,14 +79,8 @@ class BeatportDiscography_shortcode {
 	*/
 	function getRenderedFeed($items, $feed, $soundPlayer, $buylink = 'on', array $dataArray ){
 
-		if($dataArray['metadata'] -> totalPages > 1){
-			$output .= $this->getPagination($dataArray['metadata'] -> host . str_replace('catalog/', 'catalog/3/', $dataArray['metadata'] -> path) . '?' . $dataArray['metadata'] -> query, $dataArray['metadata'] -> totalPages);
-		}
-
 		$output .= '<div id="beatport-discography-results">' . PHP_EOL;
 		$output .= '<ul class="releaselist">' . PHP_EOL;
-
-
 
 		if($items == 'releases'){
 			/** If we want the releases we then use the releases object from the API (http://api.beatport.com/releases.html) */
@@ -243,11 +226,11 @@ class BeatportDiscography_shortcode {
 
 		if($atts['feed'] == 'artist'){
 			$url .= '';
-			$qrystring = '?facets[]=performerName:' . str_replace(' ', '+', $atts['artist']) . '&sortBy=publishDate%20desc&perPage=' . $atts['perpage'];
+			$qrystring = '?facets[]=performerName:' . str_replace(' ', '+', $atts['artist']) . '&sortBy=publishDate%20desc&perPage=150';
 			
 		}else{
 			$url .= '';
-			$qrystring = '?facets[]=labelName:' . str_replace(' ', '+', $atts['label']) . '&sortBy=publishDate%20desc&perPage=' . $atts['perpage'];
+			$qrystring = '?facets[]=labelName:' . str_replace(' ', '+', $atts['label']) . '&sortBy=publishDate%20desc&perPage=150';
 		}
 
 		$dataArray = $this->getData($url, $qrystring);
