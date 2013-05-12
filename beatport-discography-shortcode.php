@@ -3,7 +3,7 @@
 Plugin Name: Beatport Discography shortcode
 Plugin URI: http://www.federicogiust.com/
 Description: Embed Beatport Discography using shortcodes
-Version: 1.1.2
+Version: 1.2.0
 Author: Federico Giust
 Author URI: http://www.federicogiust.com
 License: GPL2
@@ -24,7 +24,7 @@ if (!class_exists('BeatportDiscography_shortcode')):
 
 class BeatportDiscography_shortcode {
 
-	var $plugin_version = '112'; // version 1.1.2
+	var $plugin_version = '120'; // version 1.2.0
 
 	/**
 	* Constructor / Initialize the plugin
@@ -80,103 +80,203 @@ class BeatportDiscography_shortcode {
 	function getRenderedFeed($items, $feed, $soundPlayer, $buylink = 'on', array $dataArray ){
 
 		$output .= '<div id="beatport-discography-results">' . PHP_EOL;
-		$output .= '<ul class="releaselist">' . PHP_EOL;
+		$output .= '<ul class="beatport-discography-results-list">' . PHP_EOL;
+		if($feed == 'artist' || $feed == 'label' ){
 
-		if($items == 'releases'){
-			/** If we want the releases we then use the releases object from the API (http://api.beatport.com/releases.html) */
+			if($items == 'release'){
+				/** If we want the releases we then use the releases object from the API (http://api.beatport.com/releases.html) */
 
-			for ($i = 0; $i < count($dataArray['results']); $i++){
-				$artistsTemp = (array) $dataArray['results'][$i] -> artists; 
-				$output .= '<li class="releaserow">' . PHP_EOL;
-				$output .= '<div id="release' . $dataArray['results'][$i] -> catalogNumber . '" class="release">' . PHP_EOL;
-				$output .= '<div class="releaseart">' . PHP_EOL;
-				
-				$output .= '<img src="' . $dataArray['results'][$i] -> images -> medium -> url . '"/>' . PHP_EOL;
+				for ($i = 0; $i < count($dataArray['results']); $i++){
+					$artistsTemp = (array) $dataArray['results'][$i] -> artists; 
+					$output .= '<li class="beatport-discography-results-row">' . PHP_EOL;
+					$output .= '<div id="release' . $dataArray['results'][$i] -> catalogNumber . '" class="beatport-discography-results-release">' . PHP_EOL;
+					$output .= '<div class="beatport-discography-results-art">' . PHP_EOL;
+					
+					$output .= '<img src="' . $dataArray['results'][$i] -> images -> medium -> url . '"/>' . PHP_EOL;
 
-				$output .= '</div>' . PHP_EOL;
-				$output .= '<div class="releaseinfo">' . PHP_EOL;
-				$output .= '<span class="releasename">' . PHP_EOL;
-				$output .= $dataArray['results'][$i] -> name . PHP_EOL;
-				
-				$output .= '</span>' . PHP_EOL;
-				$output .= '<br />' . PHP_EOL;
-				$output .= '<span class="releaseartists">' . PHP_EOL;
-				for($j = 0; $j < count($artistsTemp); $j++){
-					$output .= $artistsTemp[$j] -> name;
-					if(count($artistsTemp)>0 && $j < count($artistsTemp)-1){
-						$output .= ', ';
+					$output .= '</div>' . PHP_EOL;
+					$output .= '<div class="beatport-discography-results-releaseinfo">' . PHP_EOL;
+					$output .= '<span class="releasename">' . PHP_EOL;
+					$output .= $dataArray['results'][$i] -> name . PHP_EOL;
+					
+					$output .= '</span>' . PHP_EOL;
+					$output .= '<br />' . PHP_EOL;
+					$output .= '<span class="beatport-discography-results-releaseartists">' . PHP_EOL;
+					for($j = 0; $j < count($artistsTemp); $j++){
+						$output .= $artistsTemp[$j] -> name;
+						if(count($artistsTemp)>0 && $j < count($artistsTemp)-1){
+							$output .= ', ';
+						}
 					}
+					
+					$output .= '</span>' . PHP_EOL;
+					$output .= '<br />' . PHP_EOL;
+					$output .= '<span class="beatport-discography-results-moreinfo">' . PHP_EOL;
+					$output .= $dataArray['results'][$i] -> catalogNumber . ' | ';
+					$output .= $dataArray['results'][$i] -> label -> name . ' | ';
+					$output .= $dataArray['results'][$i] -> releaseDate . PHP_EOL;
+					if($buylink == 'on'){
+						$output .= ' | <a href="https://www.beatport.com/release/' . $dataArray['results'][$i] -> slug . '/' . $dataArray['results'][$i] -> id . '" target="_new">Buy</a>';
+					}
+					$output .= $dataArray['results'][$i] -> genres -> name;
+					$output .= '</span>' . PHP_EOL;
+					$output .= '</div>' . PHP_EOL;
+					$output .= '</div>' . PHP_EOL;
+					$output .= '</li>' . PHP_EOL;
 				}
-				
-				$output .= '</span>' . PHP_EOL;
-				$output .= '<br />' . PHP_EOL;
-				$output .= '<span class="releasemoreinfo">' . PHP_EOL;
-				$output .= $dataArray['results'][$i] -> catalogNumber . ' | ';
-				$output .= $dataArray['results'][$i] -> label -> name . ' | ';
-				$output .= $dataArray['results'][$i] -> releaseDate . PHP_EOL;
-				if($buylink == 'on'){
-					$output .= ' | <a href="https://www.beatport.com/release/' . $dataArray['results'][$i] -> slug . '/' . $dataArray['results'][$i] -> id . '" target="_new">Buy</a>';
+
+			}elseif ($items == 'track'){
+				/** If we want the tracks, we then use the tracks object (http://api.beatport.com/tracks.html) */
+				for ($i = 0; $i < count($dataArray['results']); $i++){
+					$artistsTemp = (array) $dataArray['results'][$i] -> artists; 
+					$genreTemp = (array) $dataArray['results'][$i] -> genres;
+					
+					$output .= '<li class="beatport-discography-results-">' . PHP_EOL;
+					$output .= '<div id="release' . $dataArray['results'][$i] -> catalogNumber . '" class="beatport-discography-results-release">' . PHP_EOL;
+					$output .= '<div class="beatport-discography-results-art">' . PHP_EOL;
+					if($soundPlayer == 'on'){
+						$output .= '<a href="' . $dataArray['results'][$i] -> sampleUrl . '" class="beatportsample">' . PHP_EOL;
+						$output .= '<div class="beatport-discography-results-coveroverlay"></div>' . PHP_EOL;			
+						$output .= '</a>' . PHP_EOL;
+					}		
+					$output .= '<img src="' . $dataArray['results'][$i] -> images -> medium -> url . '"/>' . PHP_EOL;
+									
+					$output .= '</div>' . PHP_EOL;
+					$output .= '<div class="beatport-discography-results-releaseinfo">' . PHP_EOL;
+					$output .= '<span class="beatport-discography-results-releasename">' . PHP_EOL;
+					
+					$output .= $dataArray['results'][$i] -> title . ' [' . $dataArray['results'][$i] -> length . ']' . PHP_EOL;
+					
+					$output .= '</span>' . PHP_EOL;
+					$output .= '<br />' . PHP_EOL;		
+					$output .= '<span class="beatport-discography-results-releaseartists">' . PHP_EOL;
+					for($j = 0; $j < count($artistsTemp); $j++){
+						$output .= $artistsTemp[$j] -> name;
+						if(count($artistsTemp)>0 && $j < count($artistsTemp)-1){
+							$output .= ', ';
+						}
+					}
+					$output .= '</span>' . PHP_EOL;
+					$output .= '<br />' . PHP_EOL;
+					$output .= '<span class="beatport-discography-results-moreinfo">' . PHP_EOL;
+					for($j = 0; $j < count($genreTemp); $j++){
+						$output .= $genreTemp[$j] -> name;
+						if(count($genreTemp)>0 && $j < count($genreTemp)-1){
+							$output .= ', ';
+						}
+					}
+					$output .= ' | ';		
+					$output .= $dataArray['results'][$i] -> label -> name . ' | ';
+					$output .= $dataArray['results'][$i] -> releaseDate . PHP_EOL;
+					if($buylink == 'on'){
+						$output .= ' | <a href="https://www.beatport.com/track/' . $dataArray['results'][$i] -> slug . '/' . $dataArray['results'][$i] -> id . '" target="_new">Buy</a>' . PHP_EOL;
+					}
+					$output .= '</span>' . PHP_EOL;
+					$output .= '<br />' . PHP_EOL;
+
+					$output .= '</div>' . PHP_EOL;
+					$output .= '</div>' . PHP_EOL;
+					$output .= '</li>' . PHP_EOL;
 				}
-				$output .= $dataArray['results'][$i] -> genres -> name;
-				$output .= '</span>' . PHP_EOL;
-				$output .= '</div>' . PHP_EOL;
-				$output .= '</div>' . PHP_EOL;
-				$output .= '</li>' . PHP_EOL;
 			}
 
-		}elseif ($items == 'tracks'){
-			/** If we want the tracks, we then use the tracks object (http://api.beatport.com/tracks.html) */
-			for ($i = 0; $i < count($dataArray['results']); $i++){
-				$artistsTemp = (array) $dataArray['results'][$i] -> artists; 
-				$genreTemp = (array) $dataArray['results'][$i] -> genres;
-				
-				$output .= '<li class="releaserow">' . PHP_EOL;
-				$output .= '<div id="release' . $dataArray['results'][$i] -> catalogNumber . '" class="release">' . PHP_EOL;
-				$output .= '<div class="releaseart">' . PHP_EOL;
-				if($soundPlayer == 'on'){
-					$output .= '<a href="' . $dataArray['results'][$i] -> sampleUrl . '" class="beatportsample">' . PHP_EOL;
-					$output .= '<div class="coveroverlay"></div>' . PHP_EOL;			
-					$output .= '</a>' . PHP_EOL;
-				}		
-				$output .= '<img src="' . $dataArray['results'][$i] -> images -> medium -> url . '"/>' . PHP_EOL;
-								
-				$output .= '</div>' . PHP_EOL;
-				$output .= '<div class="releaseinfo">' . PHP_EOL;
-				$output .= '<span class="releasename">' . PHP_EOL;
-				
-				$output .= $dataArray['results'][$i] -> title . ' [' . $dataArray['results'][$i] -> length . ']' . PHP_EOL;
-				
-				$output .= '</span>' . PHP_EOL;
-				$output .= '<br />' . PHP_EOL;		
-				$output .= '<span class="releaseartists">' . PHP_EOL;
-				for($j = 0; $j < count($artistsTemp); $j++){
-					$output .= $artistsTemp[$j] -> name;
-					if(count($artistsTemp)>0 && $j < count($artistsTemp)-1){
-						$output .= ', ';
-					}
-				}
-				$output .= '</span>' . PHP_EOL;
-				$output .= '<br />' . PHP_EOL;
-				$output .= '<span class="releasemoreinfo">' . PHP_EOL;
-				for($j = 0; $j < count($genreTemp); $j++){
-					$output .= $genreTemp[$j] -> name;
-					if(count($genreTemp)>0 && $j < count($genreTemp)-1){
-						$output .= ', ';
-					}
-				}
-				$output .= ' | ';		
-				$output .= $dataArray['results'][$i] -> label -> name . ' | ';
-				$output .= $dataArray['results'][$i] -> releaseDate . PHP_EOL;
-				if($buylink == 'on'){
-					$output .= ' | <a href="https://www.beatport.com/track/' . $dataArray['results'][$i] -> slug . '/' . $dataArray['results'][$i] -> id . '" target="_new">Buy</a>' . PHP_EOL;
-				}
-				$output .= '</span>' . PHP_EOL;
-				$output .= '<br />' . PHP_EOL;
 
-				$output .= '</div>' . PHP_EOL;
-				$output .= '</div>' . PHP_EOL;
-				$output .= '</li>' . PHP_EOL;
+		}elseif ($feed == 'id') {
+
+			$beatport_url = 'https://www.beatport.com/';
+
+			if (empty($dataArray['results'])) {
+				return 'Release not found';
 			}
+
+			if($items == 'release'){
+				$metadata = $dataArray['results'] -> release;
+
+
+			}elseif ($items == 'track') {
+
+				$metadata = $dataArray['results'] -> track;
+
+
+			}
+			
+
+			$output = '';
+			
+			$dynamicImg = urldecode($metadata->dynamicImages->main->url);
+
+			$dynamicImg = str_replace('{hq}', '', $dynamicImg);
+			$img500 = str_replace('{w}x{h}','500x500', $dynamicImg);
+			$img212 = str_replace('{w}x{h}','212x212', $dynamicImg);
+
+			$artist_list = array();
+			$artist_names = array();
+			foreach ($metadata->artists as $artist) {
+				$artist_list[] = '<a target="_new" href="'.$beatport_url.'artist/'.$artist->slug.'/'.$artist->id.'" >'.$artist->name.'</a>';
+				$artist_names[] = $artist->name;
+			}
+			$artist_output = implode(' ', $artist_list);
+			$artist_names_output = implode(',  ', $artist_names);
+	 
+			$genre_list = array();
+			foreach ($metadata->genres as $genre) {
+				$genre_list[] = '<a target="_new" href="'.$beatport_url.'genre/'.$genre->slug.'/'.$genre->id.'" >'.$genre->name.'</a>';
+			}
+			$genre_output = implode(' ', $genre_list);
+
+			$price = $metadata->price->value;
+
+			$price_output = intval($price / 100);
+			if ($price % 100 != 0) {
+				$price_output .= ','.(($price % 100));
+			}
+
+			$output .= '';
+
+			$output .= '<div class="beatport-discography-results">';
+
+			$output .= 		'<div class="beatport-discography-results-detail-metadata">
+								<div class="beatport-discography-results-album-intro">
+									<div class="beatport-discography-results-album-title">'.$metadata->name.'</div><br />
+									<div class="beatport-discography-results-album-artist">'.$artist_output.'</div>
+								</div>
+								<div class="beatport-discography-results-coverart-wrapper">
+									<a target="_new" href="'.$beatport_url.'release/'.$metadata->slug.'/'.$metadata->id.'" data-full-image-url="'.$img500.'">
+										<img class="beatport-discography-results-coverart" src="'.$img212.'" alt="'.$artist_names_output.' - '.$metadata->name.'" width="212" height="212">
+									</a>
+								</div>';
+			$output .= 			'<div class="beatport-discography-results-description">
+									<table class="beatport-discography-results-meta-data">
+										<colgroup>
+											<col class="beatport-discography-results-meta-data-col1">
+											<col class="beatport-discography-results-meta-data-col2">
+										</colgroup>
+									<tbody>
+										<tr>
+											<td class="beatport-discography-results-meta-data-label">Release Date</td>
+											<td class="beatport-discography-results-meta-data-value">'.$metadata->releaseDate.'</td>
+											</tr>
+										<tr>
+											<td class="beatport-discography-results-meta-data-label">Label</td>
+											<td class="beatport-discography-results-meta-data-value"><a target="_new" href="'.$beatport_url.'/label/'.$metadata->label->slug.'/'.$metadata->label->id.'">'.$metadata->label->name.'</a></td>
+										</tr>
+										<tr><td class="beatport-discography-results-meta-data-label">Catalogue #</td>
+											<td class="beatport-discography-results-meta-data-value">'.$metadata->catalogNumber.'</td>
+										</tr>
+										<tr><td class="beatport-discography-results-meta-data-label">Price</td>
+											<td class="beatport-discography-results-meta-data-value">'.$metadata->price->symbol.' '.$price_output.'</td>
+										</tr>
+										<tr><td class="beatport-discography-results-meta-data-label">Genere</td>
+											<td class="beatport-discography-results-meta-data-value">'.$genre_output.'</td>
+										</tr>
+									</tbody>
+									</table>						
+								</div>
+								<div class="beatport-discography-results-description-album">'.$metadata->description.'</div>
+							</div>
+						</div>
+						<div style="clear:both;"></div>
+						';
 
 		}else{
 			$output .= 'An error has ocurred.';
@@ -207,6 +307,7 @@ class BeatportDiscography_shortcode {
 			'feed' => '',
 			'artist' => '',
 			'label' => '',
+			'id' => '',
    			'items' => '',
    			'soundplayer' => '',
    			'buylink' => '',
@@ -218,19 +319,30 @@ class BeatportDiscography_shortcode {
 
 		$url = 'http://' . $this -> get_server_host();
 
-		if($atts['items'] == 'releases'){
-			$url .= 'releases';
-		}else{
-			$url .= 'tracks';
+		if($atts['items'] == 'release'){
+			if($atts['feed'] == 'artist' || $atts['feed'] == 'label'){
+				$url .= 'releases';	
+			}else{
+				$url .= 'beatport/release';
+			}
+		}elseif($atts['items'] == 'track'){
+			if($atts['feed'] == 'artist' || $atts['feed'] == 'label'){
+				$url .= 'tracks';	
+			}else{
+				$url .= 'beatport/track';
+			}
 		}
 
 		if($atts['feed'] == 'artist'){
 			$url .= '';
 			$qrystring = '?facets[]=performerName:' . str_replace(' ', '+', $atts['artist']) . '&sortBy=publishDate%20desc&perPage=150';
 			
-		}else{
+		}elseif($atts['feed'] == 'label'){
 			$url .= '';
 			$qrystring = '?facets[]=labelName:' . str_replace(' ', '+', $atts['label']) . '&sortBy=publishDate%20desc&perPage=150';
+		}elseif($atts['feed'] == 'id'){
+			$url .= '';
+			$qrystring = '?id=' . str_replace(' ', '+', $atts['id']);
 		}
 
 		$dataArray = $this->getData($url, $qrystring);

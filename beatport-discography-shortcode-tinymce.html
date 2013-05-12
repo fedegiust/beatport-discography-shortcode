@@ -30,42 +30,42 @@
 
 			jQuery('#artistfeed').click(function(){
 				jQuery('.labelfeed').val('');
-				jQuery('.releasefeed').val('');
+				jQuery('.idfeed').val('');
 				jQuery('.labelfeed').prop('disabled', true);
 				jQuery('.artistfeed').prop('disabled', false);
-				jQuery('.releasefeed').prop('disabled', true);
+				jQuery('.idfeed').prop('disabled', true);
 				jQuery('.step-2').show();
 				jQuery('.step-3').hide();
 				jQuery('#soundPlayer').removeAttr('checked');
 				jQuery('#buylink').removeAttr('checked');
-				jQuery('input[name=items]').val('');
+				//jQuery('input[name=items]').val('');
 				jQuery('input[name=items]').removeAttr('checked');
 			});
 			jQuery('#labelfeed').click(function(){
 				jQuery('.artistfeed').val('');
-				jQuery('.releasefeed').val('');
+				jQuery('.idfeed').val('');
 				jQuery('.labelfeed').prop('disabled', false);
 				jQuery('.artistfeed').prop('disabled', true);
-				jQuery('.releasefeed').prop('disabled', true);
+				jQuery('.idfeed').prop('disabled', true);
 				jQuery('.step-2').show();
 				jQuery('.step-3').hide();
 				jQuery('#soundPlayer').removeAttr('checked');
 				jQuery('#buylink').removeAttr('checked');
-				jQuery('input[name=items]').val('');
+				//jQuery('input[name=items]').val('');
 				jQuery('input[name=items]').removeAttr('checked');
 			});
 
-			jQuery('#releasefeed').click(function(){
+			jQuery('#idfeed').click(function(){
 				jQuery('.artistfeed').val('');
 				jQuery('.labelfeed').val('');
 				jQuery('.labelfeed').prop('disabled', true);
 				jQuery('.artistfeed').prop('disabled', true);
-				jQuery('.releasefeed').prop('disabled', false);
+				jQuery('.idfeed').prop('disabled', false);
 				jQuery('.step-2').show();
 				jQuery('.step-3').hide();
 				jQuery('#soundPlayer').removeAttr('checked');
 				jQuery('#buylink').removeAttr('checked');
-				jQuery('input[name=items]').val('');
+				//jQuery('input[name=items]').val('');
 				jQuery('input[name=items]').removeAttr('checked');
 				
 			});
@@ -73,7 +73,6 @@
 			jQuery('.artistfeed').blur(function(){
 				if(jQuery(this).val() != ''){
 					jQuery('.step-3').show();
-					jQuery('.artist-label-feed').show();
 				}else{
 					jQuery('.step-3').hide();
 				}
@@ -82,29 +81,27 @@
 			jQuery('.labelfeed').blur(function(){
 				if(jQuery(this).val() != ''){
 					jQuery('.step-3').show();
-					jQuery('.artist-label-feed').show();
 				}else{
 					jQuery('.step-3').hide();
 				}
 			});
 
-			jQuery('.releasefeed').blur(function(){
+			jQuery('.idfeed').blur(function(){
 				if(jQuery(this).val() != ''){
-					jQuery('.step-3').show();
-					jQuery('.artist-label-feed').hide();
+					jQuery('.step-3').show();					
 				}else{
 					jQuery('.step-3').hide();
-					jQuery('.artist-label-feed').show();
 				}
 			});
 
 			jQuery('input[name=items]').click(function(){
-				if(jQuery(this).val() == 'releases'){
-					console.log(jQuery(this).val());
+				console.log(jQuery(this).val());
+				if(jQuery(this).val() == 'release'){
+					
 					jQuery('#soundPlayer').removeAttr('checked');
 					jQuery('#soundPlayer').prop('disabled', true);
 				}else{
-					console.log(jQuery(this).val());
+
 					jQuery('#soundPlayer').prop('disabled', false);
 				}
 
@@ -134,16 +131,34 @@
 						inputs = form.elements, input, inputName, inputValue,
 						l = inputs.length, i = 0;
 
+					feed = jQuery('input[name=feed]:checked').val();
+
+					if (feed == 'artist') {
+						value = jQuery('input[name=artist]').val();
+						if (isEmpty(value)) {
+							alert("You need to introduce an artist name.");
+							return false;
+						}
+					}
+					else if (feed == 'label') {
+						value = jQuery('input[name=label]').val();
+						if (isEmpty(value)) {
+							alert("You need to introduce a label name.");
+							return false;
+						}
+					}
+					else if (feed == 'id') {
+						value = jQuery('input[name=id]').val();
+						if (isEmpty(value)) {
+							alert("You need to introduce an id of the release or track.");
+							return false;
+						}
+					}
+
 					for ( ; i < l; i++) {
 						input = inputs[i];
 						inputName = input.name;
 						inputValue = input.value;
-
-						// Artist Name 
-						if ((inputName == "label" && isEmpty(inputValue)) && (inputName == "artist" && isEmpty(inputValue)) ){
-							alert("You need to introduce an artist name.");
-							return false;
-						}
 
 						// inputs of type "checkbox", "radio" and "text"
 						if (input.checked || (input.type == "text" && !isEmpty(inputValue) && inputValue != input.defaultValue)) {
@@ -182,6 +197,7 @@
     	.form-stacked .required{color:red}
     	.step-2 { display: none;}
     	.step-3 { display: none;}
+    	.release-track-id-feed { display: none;}
 	</style>
 </head>
 <body>
@@ -208,7 +224,7 @@
 					<li>
 						<label>
 							<span class="span2">Release (Detailed)</span>
-							<input type="radio" name="feed" id="releasefeed" value="release"/>
+							<input type="radio" name="feed" id="idfeed" value="id"/>
 						</label>
 					</li>
 				</ul>	
@@ -235,7 +251,7 @@
 						<li>
 							<label>
 								<span class="span2">Release Id<span class="required">*</span></span>
-								<input type="text" name="label" class="span4 releasefeed"/>
+								<input type="text" name="id" class="span4 idfeed"/>
 								<span class="help-inline">Release Id exactly as it appears on Beatport.</span>
 							</label>
 						</li>
@@ -247,16 +263,16 @@
 		<fieldset class="step-3">
 			<legend>Step 3 - Items you would like displayed</legend>
 			<ul class="inputs-list">
-					<li class="artist-label-feed">
+					<li>
 						<label>
 							<span class="span2">Releases</span>
-							<input type="radio" name="items" value="releases" />
+							<input type="radio" name="items" value="release" />
 						</label>
 					</li>
-					<li class="artist-label-feed">
+					<li>
 						<label>
 							<span class="span2">Tracks</span>
-							<input type="radio" name="items" value="tracks" />
+							<input type="radio" name="items" value="track" />
 						</label>
 					</li>
 					<li>

@@ -1,36 +1,36 @@
-.release{
+.beatport-discography-results-release{
     margin-top: 10px;
     margin-bottom: 10px;
 }
-.releaselist{
+.beatport-discography-results-list{
     list-style: none;
     padding: 0;
     margin: 0;
 }
-.releaserow{
+.beatport-discography-results-row{
     float: left;
     width: 480px;
     border-bottom: 1px solid #ededed
 }
-.releaseart{
+.beatport-discography-results-art{
     float: left;
     padding-right: 8px;
     padding-top: 5px;
     width: 60px;
     height: 60px;
 }
-.releaseinfo{
+.beatport-discography-results-releaseinfo{
     white-space: normal;
     overflow: hidden;
     font-size: .9em;
 }
-.releaseartists{
+.beatport-discography-results-releaseartists{
     white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.3em;
 }
-.coveroverlay{
+.beatport-discography-results-coveroverlay{
     display: inline-block;
     position: absolute;
     height: 60px;
@@ -39,34 +39,125 @@
     opacity: 0;
 }
 
-.coveroverlay:hover {
+.beatport-discography-results-coveroverlay:hover {
     opacity: 1;
     height: 60px;
     width: 60px;
 
     background-repeat: no-repeat;
 }
-a.sm2_paused:hover .coveroverlay:hover,
-a.sm2_link:hover .coveroverlay:hover{
+
+
+div.beatport-discography-results-album-intro h1{
+    margin: 0;
+}
+
+div.beatport-discography-results-album-title {
+
+}
+
+div.beatport-discography-results-album-artist {
+    top: -25px;
+    position: relative;
+    width: auto;
+    text-align: left;
+    max-width: 70%; 
+}
+
+div.beatport-discography-results-coverart-wrapper {
+    width: 212px;
+    float: left;
+}
+
+div.beatport-discography-results-description {
+    float: right;
+    width: 58%;
+}
+
+table.beatport-discography-results-meta-data {
+    margin: 0 0 1em;
+}
+
+div.beatport-discography-results-description table {
+    width: 100%;
+}
+
+div.beatport-discography-results-description-album {
+    width: auto;
+    float: right;
+}
+
+div.beatport-discography-results-release-tracks {
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+div.beatport-discography-results-release-tracks {
+    background: #ddd;
+    border: 1px solid #d3d3d3;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    padding: 2px;
+}
+
+table.beatport-discography-results-tracks {
+    border: 1px solid rgb(208, 217, 219);
+    margin: 0;
+}
+
+tr.beatport-discography-results-track-odd {
+    background-color: rgb(234, 224, 238);
+}
+
+tr.beatport-discography-results-track-even {
+    background-color: rgb(249, 255, 215);
+}
+
+td.beatport-discography-results-track-number {
+    width: 30px;
+    padding-left: 10px;
+    font-weight: bolder;
+}
+
+td.beatport-discography-results-track-timing {
+    min-width: 110px;
+}
+
+td.beatport-discography-results-track-artists {
+    padding-top: 5px;
+    padding-left: 10px;
+    min-width: 200px;
+}
+
+td.beatport-discography-results-track-price {
+    font-weight: bolder;
+    text-align: right;
+    padding-right: 20px;
+}
+
+
+
+a.sm2_paused:hover .beatport-discography-results-coveroverlay:hover,
+a.sm2_link:hover .beatport-discography-results-coveroverlay:hover{
  background-image:url(image/icon-play.png);
  background-position:50% 50%;
  background-repeat:no-repeat;
  _background-image:url(image/icon-play.gif); /* IE 6 */
 }
-a.sm2_link:hover .coveroverlay:hover{
+a.sm2_link:hover .beatport-discography-results-coveroverlay:hover{
  /* default hover color, if you'd like.. */
  background-color: transparent;
  color:#fff;
 }
-a.sm2_paused .coveroverlay{
+a.sm2_paused .beatport-discography-results-coveroverlay{
  background-color: transparent;
 }
-a.sm2_paused:hover .coveroverlay:hover{
+a.sm2_paused:hover .beatport-discography-results-coveroverlay:hover{
  background:transparent url(image/icon-play.png) no-repeat 50% 50%;
  _background-image:url(image/icon-play.gif);
 }
-a.sm2_playing .coveroverlay,
-a.sm2_playing:hover .coveroverlay:hover{
+a.sm2_playing .beatport-discography-results-coveroverlay,
+a.sm2_playing:hover .beatport-discography-results-coveroverlay:hover{
  background:transparent url(image/icon-pause.png) no-repeat 50% 50%;
  _background-image:url(image/icon-pause.gif);
  text-decoration:none;
