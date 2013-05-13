@@ -189,17 +189,7 @@ class BeatportDiscography_shortcode {
 				return 'Release not found';
 			}
 
-			if($items == 'release'){
-				$metadata = $dataArray['results'] -> release;
-
-
-			}elseif ($items == 'track') {
-
-				$metadata = $dataArray['results'] -> track;
-
-
-			}
-			
+			$metadata = $dataArray['results'] -> release;	
 
 			$output = '';
 			
@@ -214,6 +204,7 @@ class BeatportDiscography_shortcode {
 			foreach ($metadata->artists as $artist) {
 				$artist_list[] = '<a target="_new" href="'.$beatport_url.'artist/'.$artist->slug.'/'.$artist->id.'" >'.$artist->name.'</a>';
 				$artist_names[] = $artist->name;
+				if($artist->type == 'artist') { $artist_original = $artist->name; }
 			}
 			$artist_output = implode(' ', $artist_list);
 			$artist_names_output = implode(',  ', $artist_names);
@@ -237,8 +228,8 @@ class BeatportDiscography_shortcode {
 
 			$output .= 		'<div class="beatport-discography-results-detail-metadata">
 								<div class="beatport-discography-results-album-intro">
-									<div class="beatport-discography-results-album-title">'.$metadata->name.'</div><br />
-									<div class="beatport-discography-results-album-artist">'.$artist_output.'</div>
+									<div class="beatport-discography-results-album-title">'.$artist_original . ' - ' . $metadata->name.'</div><br />
+									<div class="beatport-discography-results-album-artist">Artists: '.$artist_output.'</div>
 								</div>
 								<div class="beatport-discography-results-coverart-wrapper">
 									<a target="_new" href="'.$beatport_url.'release/'.$metadata->slug.'/'.$metadata->id.'" data-full-image-url="'.$img500.'">
@@ -277,6 +268,8 @@ class BeatportDiscography_shortcode {
 						</div>
 						<div style="clear:both;"></div>
 						';
+
+				
 
 		}else{
 			$output .= 'An error has ocurred.';
