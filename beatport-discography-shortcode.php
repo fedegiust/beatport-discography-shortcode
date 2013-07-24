@@ -233,7 +233,7 @@ class BeatportDiscography_shortcode {
 								</div>
 								<div class="beatport-discography-results-coverart-wrapper">
 									<a target="_new" href="'.$beatport_url.'release/'.$metadata->slug.'/'.$metadata->id.'" data-full-image-url="'.$img500.'">
-										<img class="beatport-discography-results-coverart" src="'.$img212.'" alt="'.$artist_names_output.' - '.$metadata->name.'" width="212" height="212">
+										<img class="beatport-discography-results-coverart" src="'.$img212.'" alt="'.$artist_names_output.' - '.$metadata->name.'" >
 									</a>
 								</div>';
 			$output .= 			'<div class="beatport-discography-results-description">
