@@ -1,3 +1,7 @@
+.beatport-discography-results{
+    width: 100%;
+}
+
 .beatport-discography-results-release{
     margin-top: 10px;
     margin-bottom: 10px;
@@ -52,12 +56,12 @@ div.beatport-discography-results-album-intro h1{
     margin: 0;
 }
 
-div.beatport-discography-results-album-title {
-
+div.beatport-discography-results-album-title p {
+    font-weight: bold;
+    margin: 0;
 }
 
 div.beatport-discography-results-album-artist {
-    top: -25px;
     position: relative;
     width: auto;
     text-align: left;
@@ -174,13 +178,13 @@ a.sm2_playing:hover .beatport-discography-results-coveroverlay:hover{
 }
 
 /* Smartphones (portrait and landscape) ----------- */
-@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+@media screen and (min-width : 320px) and (max-width : 480px) {
 /* Styles */
     div.beatport-discography-results-coverart-wrapper {
-        width: 90%;
-        height: 90%;
+        width: 100%;
+        height: 100%;
         text-align: center;
-        float: left;
+        float: none;
         display: inline-block;
         position: relative;
     }
@@ -190,71 +194,63 @@ a.sm2_playing:hover .beatport-discography-results-coveroverlay:hover{
     }
 
     div.beatport-discography-results-description {
-        float: left;
-        width: 55%;
+        float: none;
+        width: 100%;
         position: relative;
-        margin-left: 1.5em;
+        margin-left: 0em;
     }
 
+    div.beatport-discography-results-description-album p {
+        font-size: 0.8em;
+    }
+
+    div.beatport-discography-results-album-artist {
+        position: relative;
+        width: auto;
+        text-align: left;
+        max-width: 100%; 
+    }
 }
 
 /* Smartphones (landscape) ----------- */
-@media only screen and (min-width : 321px) {
+@media screen and (min-width : 321px) {
 /* Styles */
+
+
 }
 
 /* Smartphones (portrait) ----------- */
-@media only screen and (max-width : 320px) {
+@media screen and (max-width : 320px) {
 /* Styles */
-
-    div.beatport-discography-results-coverart-wrapper {
-        width: 90%;
-        height: 90%;
-        text-align: center;
-        float: left;
-        display: inline-block;
-        position: relative;
-    }
-
-    div.beatport-discography-results-coverart-wrapper img {
-        width: 100%;
-    }
-
-    div.beatport-discography-results-description {
-        float: left;
-        width: 55%;
-        position: relative;
-        margin-left: 1.5em;
-    }
 
 }
 
 /* iPads (portrait and landscape) ----------- */
-@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+@media screen and (min-width : 768px) and (max-width : 1024px) {
 /* Styles */
 }
 
 /* iPads (landscape) ----------- */
-@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
+@media screen and (min-width : 768px) and (max-width : 1024px) and (orientation : landscape) {
 /* Styles */
 }
 
 /* iPads (portrait) ----------- */
-@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
+@media screen and (min-width : 768px) and (max-width : 1024px) and (orientation : portrait) {
 /* Styles */
 }
 
 /* Desktops and laptops ----------- */
-@media only screen and (min-width : 1224px) {
+@media screen and (min-width : 1024px) {
 /* Styles */
 }
 
 /* Large screens ----------- */
-@media only screen and (min-width : 1824px) {
+@media screen and (min-width : 1824px) {
 /* Styles */
 }
 
 /* iPhone 4 ----------- */
-@media only screen and (-webkit-min-device-pixel-ratio : 1.5), only screen and (min-device-pixel-ratio : 1.5) {
+@media screen and (-webkit-min-device-pixel-ratio : 1.5), screen and (min-device-pixel-ratio : 1.5) {
 /* Styles */
 }

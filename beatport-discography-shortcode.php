@@ -228,12 +228,12 @@ class BeatportDiscography_shortcode {
 
 			$output .= 		'<div class="beatport-discography-results-detail-metadata">
 								<div class="beatport-discography-results-album-intro">
-									<div class="beatport-discography-results-album-title">'.$artist_original . ' - ' . $metadata->name.'</div><br />
-									<div class="beatport-discography-results-album-artist">Artists: '.$artist_output.'</div>
+									<div class="beatport-discography-results-album-title"><p>'.$artist_original . ' - ' . $metadata->name.'</p></div>
+									<div class="beatport-discography-results-album-artist"><p>Artists: '.$artist_output.'</p></div>
 								</div>
 								<div class="beatport-discography-results-coverart-wrapper">
 									<a target="_new" href="'.$beatport_url.'release/'.$metadata->slug.'/'.$metadata->id.'" data-full-image-url="'.$img500.'">
-										<img class="beatport-discography-results-coverart" src="'.$img212.'" alt="'.$artist_names_output.' - '.$metadata->name.'" >
+										<img class="beatport-discography-results-coverart" src="'.$img500.'" alt="'.$artist_names_output.' - '.$metadata->name.'" >
 									</a>
 								</div>';
 			$output .= 			'<div class="beatport-discography-results-description">
@@ -263,7 +263,7 @@ class BeatportDiscography_shortcode {
 									</tbody>
 									</table>						
 								</div>
-								<div class="beatport-discography-results-description-album">'.$metadata->description.'</div>
+								<div class="beatport-discography-results-description-album"><p>'.$metadata->description.'</p></div>
 							</div>
 						</div>
 						<div style="clear:both;"></div>
