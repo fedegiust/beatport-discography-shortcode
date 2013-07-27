@@ -145,7 +145,7 @@ class BeatportDiscography_shortcode {
 					$output .= '<div class="beatport-discography-results-releaseinfo">' . PHP_EOL;
 					$output .= '<span class="beatport-discography-results-releasename">' . PHP_EOL;
 					
-					$output .= $dataArray['results'][$i] -> title . ' [' . $dataArray['results'][$i] -> length . ']' . PHP_EOL;
+					$output .= $dataArray['results'][$i] -> title . ' [' . $dataArray['results'][$i] -> length . '] - (' . $dataArray['results'][$i] -> bpm . ' bpm - ' . $dataArray['results'][$i] -> key -> shortName . ')' . PHP_EOL;
 					
 					$output .= '</span>' . PHP_EOL;
 					$output .= '<br />' . PHP_EOL;		

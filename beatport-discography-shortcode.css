@@ -101,6 +101,10 @@ div.beatport-discography-results-description-album {
     float: right;
 }
 
+div.beatport-discography-results-description-album p{
+    font-size: 0.8em;
+}
+
 div.beatport-discography-results-release-tracks {
     margin-top: 10px;
     margin-bottom: 50px;
@@ -178,7 +182,7 @@ a.sm2_playing:hover .beatport-discography-results-coveroverlay:hover{
 }
 
 /* Smartphones (portrait and landscape) ----------- */
-@media screen and (min-width : 320px) and (max-width : 480px) {
+@media screen and (min-width : 320px) and (max-width : 700px) {
 /* Styles */
     div.beatport-discography-results-coverart-wrapper {
         width: 100%;
@@ -224,6 +228,14 @@ a.sm2_playing:hover .beatport-discography-results-coveroverlay:hover{
 /* Styles */
 
 }
+
+/* Smartphones (landscape) ----------- */
+@media screen and (min-width : 600px) and (max-width: 700px) {
+/* Styles */
+
+
+}
+
 
 /* iPads (portrait and landscape) ----------- */
 @media screen and (min-width : 768px) and (max-width : 1024px) {
