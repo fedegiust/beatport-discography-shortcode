@@ -13,7 +13,7 @@
 }
 .beatport-discography-results-row{
     float: left;
-    width: 480px;
+    width: 100%;
     border-bottom: 1px solid #ededed
 }
 .beatport-discography-results-art{
@@ -213,6 +213,10 @@ a.sm2_playing:hover .beatport-discography-results-coveroverlay:hover{
         width: auto;
         text-align: left;
         max-width: 100%; 
+    }
+
+    div.beatport-discography-results-releaseinfo {
+        margin: 0 2.571428571rem 0 0;
     }
 }
 
