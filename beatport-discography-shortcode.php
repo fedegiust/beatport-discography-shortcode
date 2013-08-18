@@ -69,6 +69,79 @@ class BeatportDiscography_shortcode {
 		wp_enqueue_script('BeatportDiscographyShortcode');
 	}
 
+	function pretty_print_tracks(array $dataArray, $short_info = False) {
+		$beatport_url = 'http://www.beatport.com/';
+		// echo '<pre>';
+		// print_r($dataArray);
+		// echo '</pre>';
+		if (empty($dataArray)) {
+			return 'Release not found';
+		}
+
+		$output = '';
+
+		$tracks = $dataArray;
+
+		$output .= '<div class="beatport-discography-results-release-tracks">';
+		//$output .= '<table class="tracks">';
+
+		//usort($tracks, "sort_tracks");
+
+		$i = 0;
+
+		foreach ($tracks as $track) {
+
+			$title = $track->title;
+			if (isset($track->mixName)) {
+				$title = str_replace('('.$track->mixName.')', '', $title);
+			}
+			$title_href = $beatport_url.'track/'.$track->slug.'/'.$track->id;
+			$title_output = '<a target="_new" href="'.$title_href.'"><b>'.$title.'</b></a>';
+			if (isset($track->mixName)) {
+				$title_output .= ' <a target="_new" style="color:grey;" href="'.$title_href.'"> ( '.$track->mixName.' )</a>';
+			}
+
+			if (!$short_info) {
+
+				$artist_list = array();
+				foreach ($track->artists as $artist) {
+					$artist_list[] = '<a target="_new" href="'.$beatport_url.'artist/'.$artist->slug.'/'.$artist->id.'" >'.$artist->name.'</a>';
+				}
+				$artist_output = implode(' ', $artist_list);
+
+				$genre_list = array();
+				foreach ($track->genres as $genre) {
+					$genre_list[] = '<a target="_new" href="'.$beatport_url.'genre/'.$genre->slug.'/'.$genre->id.'" >'.$genre->name.'</a>';
+				}
+				$genre_output = implode(' ', $genre_list);
+			}
+
+			$tr_class = ($i % 2 == 0) ? 'even' : 'odd';
+	
+			$output .= '	<span class="track-'.$tr_class.'">
+								<span class="track-number">'.$track->trackNumber.'</span>
+								<span class="track-title">'.$title_output.'</span>';
+
+			if (!$short_info) {
+				$output .= '	<span class="track-timing">'.$track->length.' / '.$track->bpm.' BPM</span>	
+								<span class="track-price">'.$track->price->display.'</span>	
+							</span><br />
+							<span class="track-'.$tr_class.'">
+								<span class="track-artists">'.$artist_output.'</span>
+								<span class="track-generes">'.$genre_output.'</span>';
+								
+				$output .= '</span>';
+				$output .= '';
+				$output .= '<br />';
+			}
+			$i++;
+		}
+		//$output .= '</table>';
+  		$output .= '</div>';
+		return $output;
+	}
+
+
 	/**
 	* Generate unordered list with the items from the feed.
 	* Depending on the type of items we want, we generate the corresponding list.
@@ -269,7 +342,10 @@ class BeatportDiscography_shortcode {
 						<div style="clear:both;"></div>
 						';
 
-				
+				$tracks = (array) $dataArray['results'] -> tracks;
+				//unset($dataArray['tracks']);
+				//$output = $this->pretty_print_release($dataArray);
+				$output .= $this->pretty_print_tracks($tracks);
 
 		}else{
 			$output .= 'An error has ocurred.';

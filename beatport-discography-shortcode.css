@@ -101,7 +101,7 @@ div.beatport-discography-results-description-album {
     float: right;
 }
 
-div.beatport-discography-results-description-album p{
+div.beatport-discography-results-description-album p, div.beatport-discography-results-release-tracks {
     font-size: 0.8em;
 }
 
@@ -111,10 +111,10 @@ div.beatport-discography-results-release-tracks {
 }
 
 div.beatport-discography-results-release-tracks {
-    background: #ddd;
-    border: 1px solid #d3d3d3;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
+    /*background: #ddd;*/
+    border-top: 1px solid rgb(208, 217, 219);
+    border-bottom: 1px solid rgb(208, 217, 219);
+
     padding: 2px;
 }
 
@@ -153,6 +153,21 @@ td.beatport-discography-results-track-price {
     padding-right: 20px;
 }
 
+.track-number {
+display: inline-block;
+width: 2%;
+}
+
+.track-title {
+display: inline-block;
+width: 70%;
+}
+
+.track-artists {
+display: inline-block;
+margin-left: 2.5%;
+width: 70%;
+}
 
 
 a.sm2_paused:hover .beatport-discography-results-coveroverlay:hover,
