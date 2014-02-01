@@ -27,13 +27,21 @@
 		jQuery(document).ready(function(){
 			jQuery('.labelfeed').prop('disabled', true);
 			jQuery('#soundPlayer').prop('disabled', true);
+			jQuery('.step-2').hide();
+			jQuery('.step-3').hide();
 
 			jQuery('#artistfeed').click(function(){
 				jQuery('.labelfeed').val('');
 				jQuery('.idfeed').val('');
+				jQuery('.step-2').show();
 				jQuery('.labelfeed').prop('disabled', true);
+				
 				jQuery('.artistfeed').prop('disabled', false);
+				
 				jQuery('.idfeed').prop('disabled', true);
+				jQuery('.artistfeed').show();
+				jQuery('.labelfeed').hide();
+				jQuery('.idfeed').hide();
 				jQuery('.step-2').show();
 				jQuery('.step-3').hide();
 				jQuery('#soundPlayer').removeAttr('checked');
@@ -47,6 +55,9 @@
 				jQuery('.labelfeed').prop('disabled', false);
 				jQuery('.artistfeed').prop('disabled', true);
 				jQuery('.idfeed').prop('disabled', true);
+				jQuery('.artistfeed').hide();
+				jQuery('.labelfeed').show();
+				jQuery('.idfeed').hide();
 				jQuery('.step-2').show();
 				jQuery('.step-3').hide();
 				jQuery('#soundPlayer').removeAttr('checked');
@@ -61,6 +72,9 @@
 				jQuery('.labelfeed').prop('disabled', true);
 				jQuery('.artistfeed').prop('disabled', true);
 				jQuery('.idfeed').prop('disabled', false);
+				jQuery('.artistfeed').hide();
+				jQuery('.labelfeed').hide();
+				jQuery('.idfeed').show();
 				jQuery('.step-2').show();
 				jQuery('.step-3').hide();
 				jQuery('#soundPlayer').removeAttr('checked');
@@ -212,19 +226,22 @@
 					<li>
 						<label>
 							<span class="span2">Artist</span>
-							<input type="radio" name="feed" id="artistfeed" value="artist" checked="checked"/>
+							<input type="radio" name="feed" id="artistfeed" value="artist"/>
+							<span class="help-inline">(Get list of tracks/releases by Artist Name)</span>
 						</label>
 					</li>
 					<li>
 						<label>
 							<span class="span2">Record Label</span>
 							<input type="radio" name="feed" id="labelfeed" value="label"/>
+							<span class="help-inline">(Get list of tracks/releases by Record Label Name)</span>
 						</label>
 					</li>
 					<li>
 						<label>
 							<span class="span2">Release (Detailed)</span>
 							<input type="radio" name="feed" id="idfeed" value="id"/>
+							<span class="help-inline">(Get a detailed view of a release by Release Id)</span>
 						</label>
 					</li>
 				</ul>	
@@ -234,21 +251,21 @@
 				<p>The minimum required fields are: Artist Name or Record Label Name</p>
 				<div class="clearfix">
 					<ul class="inputs-list">
-						<li>
+						<li class="artistfeed">
 							<label>
 								<span class="span2">Artist Name<span class="required">*</span></span>
 								<input type="text" name="artist" class="span4 artistfeed"/>
 								<span class="help-inline">Artist name exactly as it appears on Beatport.</span>
 							</label>
 						</li>
-						<li>
+						<li class="labelfeed">
 							<label>
 								<span class="span2">Label Name<span class="required">*</span></span>
 								<input type="text" name="label" class="span4 labelfeed"/>
 								<span class="help-inline">Label Name exactly as it appears on Beatport.</span>
 							</label>
 						</li>
-						<li>
+						<li class="idfeed">
 							<label>
 								<span class="span2">Release Id<span class="required">*</span></span>
 								<input type="text" name="id" class="span4 idfeed"/>

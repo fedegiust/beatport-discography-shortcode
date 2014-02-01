@@ -424,7 +424,7 @@ class BeatportDiscography_shortcode {
 
 	function get_server_host()
 	{
-		return 'api.beatport.com/catalog/3/';
+		return 'oauth-api.beatport.com/catalog/3/';
 	}
 
 	
