@@ -3,7 +3,7 @@
 Plugin Name: Beatport Discography shortcode
 Plugin URI: http://www.federicogiust.com/
 Description: Embed Beatport Discography using shortcodes
-Version: 1.2.0
+Version: 1.3.0
 Author: Federico Giust
 Author URI: http://www.federicogiust.com
 License: GPL2
@@ -24,7 +24,7 @@ if (!class_exists('BeatportDiscography_shortcode')):
 
 class BeatportDiscography_shortcode {
 
-	var $plugin_version = '120'; // version 1.2.0
+	var $plugin_version = '130'; // version 1.2.0
 
 	/**
 	* Constructor / Initialize the plugin
@@ -386,7 +386,7 @@ class BeatportDiscography_shortcode {
 		// HTML OUTPUT
 		$output = '';
 
-		$url = 'http://' . $this -> get_server_host();
+		$urlhost = 'http://' . $this -> get_server_host();
 
 		if($atts['items'] == 'release'){
 			if($atts['feed'] == 'artist' || $atts['feed'] == 'label'){
@@ -404,17 +404,17 @@ class BeatportDiscography_shortcode {
 
 		if($atts['feed'] == 'artist'){
 			$url .= '';
-			$qrystring = '?facets[]=performerName:' . str_replace(' ', '+', $atts['artist']) . '&sortBy=publishDate%20desc&perPage=150';
+			$qrystring = '?facets=performerName:' . str_replace(' ', '+', $atts['artist']) . '&sortBy=publishDate%20desc&perPage=150';
 			
 		}elseif($atts['feed'] == 'label'){
 			$url .= '';
-			$qrystring = '?facets[]=labelName:' . str_replace(' ', '+', $atts['label']) . '&sortBy=publishDate%20desc&perPage=150';
+			$qrystring = '?facets=labelName:' . str_replace(' ', '+', $atts['label']) . '&sortBy=publishDate%20desc&perPage=150';
 		}elseif($atts['feed'] == 'id'){
 			$url .= '';
-			$qrystring = '?id=' . str_replace(' ', '+', $atts['id']);
+			$qrystring = '?id=' . str_replace(' ', '+', $atts['id']).'';
 		}
 
-		$dataArray = $this->getData($url, $qrystring);
+		$dataArray = $this->getData($urlhost, $qrystring . '&url=' . $url);
 
 		$output .= $this->getRenderedFeed($atts['items'], $atts['feed'], $atts['soundplayer'], $atts['buylink'], $dataArray);
 		return $output;
@@ -424,7 +424,7 @@ class BeatportDiscography_shortcode {
 
 	function get_server_host()
 	{
-		return 'www.federicogiust.com/beatportapi/betaport_api_example.php';
+		return 'www.federicogiust.com/beatportapi/beatport_api.php';
 	}
 
 	
