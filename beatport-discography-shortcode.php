@@ -24,7 +24,7 @@ if (!class_exists('BeatportDiscography_shortcode')):
 
 class BeatportDiscography_shortcode {
 
-	var $plugin_version = '130'; // version 1.2.0
+	var $plugin_version = '130'; // version 1.3.0
 
 	/**
 	* Constructor / Initialize the plugin
