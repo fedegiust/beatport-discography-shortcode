@@ -61,19 +61,27 @@ class BeatportDiscography_shortcode {
 		wp_register_style('BeatportDiscographyShortcode', plugins_url('beatport-discography-shortcode.css', __FILE__));
 		wp_enqueue_style('BeatportDiscographyShortcode');
 	}
-	
+
+	/**
+	* Output JS
+	* This gets the name of the JS file we use in the plugin
+	*/
 	function output_js()
 	{
-
 		wp_register_script('BeatportDiscographyShortcode', plugins_url('beatport-discography-shortcode.js', __FILE__), array( 'jquery' ));
 		wp_enqueue_script('BeatportDiscographyShortcode');
 	}
 
+	/**
+	* pretty_print_tracks
+	* This function creates a formatted list of a release tracklist
+	* It accepts two parameters:
+	* $dataArray - Array with the tracklist
+	* $short_info - boolean
+	*/
 	function pretty_print_tracks(array $dataArray, $short_info = False) {
 		$beatport_url = 'http://www.beatport.com/';
-		// echo '<pre>';
-		// print_r($dataArray);
-		// echo '</pre>';
+
 		if (empty($dataArray)) {
 			return 'Release not found';
 		}
@@ -83,9 +91,6 @@ class BeatportDiscography_shortcode {
 		$tracks = $dataArray;
 
 		$output .= '<div class="beatport-discography-results-release-tracks">';
-		//$output .= '<table class="tracks">';
-
-		//usort($tracks, "sort_tracks");
 
 		$i = 0;
 
@@ -136,7 +141,7 @@ class BeatportDiscography_shortcode {
 			}
 			$i++;
 		}
-		//$output .= '</table>';
+
   		$output .= '</div>';
 		return $output;
 	}
@@ -207,11 +212,12 @@ class BeatportDiscography_shortcode {
 					$output .= '<li class="beatport-discography-results-">' . PHP_EOL;
 					$output .= '<div id="release' . $dataArray['results'][$i] -> catalogNumber . '" class="beatport-discography-results-release">' . PHP_EOL;
 					$output .= '<div class="beatport-discography-results-art">' . PHP_EOL;
-					if($soundPlayer == 'on'){
-						$output .= '<a href="' . $dataArray['results'][$i] -> sampleUrl . '" class="beatportsample">' . PHP_EOL;
-						$output .= '<div class="beatport-discography-results-coveroverlay"></div>' . PHP_EOL;			
-						$output .= '</a>' . PHP_EOL;
-					}		
+					// The sound player is temporarily disabled because beatport removed the samples from the api.
+					// if($soundPlayer == 'on'){
+					// 	$output .= '<a href="' . $dataArray['results'][$i] -> sampleUrl . '" class="beatportsample">' . PHP_EOL;
+					// 	$output .= '<div class="beatport-discography-results-coveroverlay"></div>' . PHP_EOL;			
+					// 	$output .= '</a>' . PHP_EOL;
+					// }		
 					$output .= '<img src="' . $dataArray['results'][$i] -> images -> medium -> url . '"/>' . PHP_EOL;
 									
 					$output .= '</div>' . PHP_EOL;
@@ -343,8 +349,6 @@ class BeatportDiscography_shortcode {
 						';
 
 				$tracks = (array) $dataArray['results'] -> tracks;
-				//unset($dataArray['tracks']);
-				//$output = $this->pretty_print_release($dataArray);
 				$output .= $this->pretty_print_tracks($tracks);
 
 		}else{
@@ -352,6 +356,8 @@ class BeatportDiscography_shortcode {
 		}
 
 		$output .= '</ul>' . PHP_EOL;
+		$output .= '<span class="poweredBy">Powered by <a href="http://www.beatport.com" target="_blank">Beatport</a><br />
+					THIS SITE (OR APPLICATION) IS NOT AFFILIATED WITH, MAINTAINED, ENDORSED OR SPONSORED BY BEATPORT, LLC OR ANY OF ITS AFFILIATES.</span>';
 		$output .= '</div>' . PHP_EOL;
 		return $output;
 	}
