@@ -140,6 +140,11 @@
 								.replace(/\//g, "%2F");
 				},
 
+				toTitleCase = function (str)
+				{
+				    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+				},
+
 				insertShortcode = function(e){
 					var sc = "[beatport_discography_sc ",
 						inputs = form.elements, input, inputName, inputValue,
@@ -178,6 +183,9 @@
 						if (input.checked || (input.type == "text" && !isEmpty(inputValue) && inputValue != input.defaultValue)) {
 							if (inputName == "title") {
 								inputValue = encodeStr(inputValue);
+							}
+							if (inputName == "artist" || inputName == "label"){
+								inputValue = toTitleCase(inputValue);
 							}
 							sc += ' ' + inputName + '="' + inputValue + '"';
 						}
@@ -292,14 +300,6 @@
 							<input type="radio" name="items" value="track" />
 						</label>
 					</li>
-					<!-- The sound player is temporarily disabled because beatport removed the samples from the api. -->
-<!-- 					<li>
-						<label>
-							<span class="span2">Sound Player</span>
-							<input type="checkbox" name="soundplayer" id="soundPlayer" />
-							<span class="help-inline">Uses Sound Manager 2 JavaScript plugin to play audio samples</span>
-						</label>
-					</li> -->
 					<li>
 						<label>
 							<span class="span2">Buy on Beatport.com link</span>

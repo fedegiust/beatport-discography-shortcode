@@ -410,16 +410,16 @@ class BeatportDiscography_shortcode {
 
 		if($atts['feed'] == 'artist'){
 			$url .= '';
-			$qrystring = '?facets=performerName:' . str_replace(' ', '+', $atts['artist']) . '&sortBy=publishDate%20desc&perPage=150';
+			$qrystring = '?facets=performerName:' . str_replace(' ', '+', ucwords(strtolower(trim($atts['artist'])))) . '&sortBy=publishDate%20desc&perPage=150';
 			
 		}elseif($atts['feed'] == 'label'){
 			$url .= '';
-			$qrystring = '?facets=labelName:' . str_replace(' ', '+', $atts['label']) . '&sortBy=publishDate%20desc&perPage=150';
+			$qrystring = '?facets=labelName:' . str_replace(' ', '+', ucwords(strtolower(trim($atts['label'])))) . '&sortBy=publishDate%20desc&perPage=150';
 		}elseif($atts['feed'] == 'id'){
 			$url .= '';
 			$qrystring = '?id=' . str_replace(' ', '+', $atts['id']).'';
 		}
-
+		echo $urlhost . $qrystring;
 		$dataArray = $this->getData($urlhost, $qrystring . '&url=' . $url);
 
 		$output .= $this->getRenderedFeed($atts['items'], $atts['feed'], $atts['soundplayer'], $atts['buylink'], $dataArray);
