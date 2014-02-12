@@ -1,8 +1,8 @@
 === Plugin Name ===
 Tags: beatport, discography, artist, dj, digital, electronic, music
 Requires at least: 3.4
-Tested up to: 3.4
-Stable tag: 1.2.0
+Tested up to: 3.8.1
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,7 +35,7 @@ It's very easy to use:
 
 Done.
 
-This version will get all releases with the following information
+This version will get a JSON object with the following information
 
 - Release Detail
 - Release Art Cover
@@ -61,28 +61,39 @@ e.g.
 = How do I use it? =
 
 After the plugin is active, there will be a new icon on the text editor toolbar. So if you go to add a new page or post you will see the beatport green logo icon. If you click on it a new modal window will open asking for one of the following:
+
 1. Type of feed do you want:
 * Artist (Default)
 * Label
 * Release (By Id)
+
 2. Which artist or label do you want:
 * Artist Name (Default)
 * Label Name
 * Release Id
+
 3. Type of catalogue you want:
 * Releases (Default)
 * Tracks
+
 4. Additional Options
-* Enable/Disable Sound Player (Only available on artist and label tracks list feed)
 * Enable/Disable buy on beatport link
 
 One option of each group is required.
 
+This will add a shortcode like this:
+
+[beatport_discography_sc feed="artist" artist="Richie Hawtin" items="track" buylink="on"]
+
+Shortcodes parameters
+* feed: string with value "artist", "label" or "id"
+* artist: string
+* label: string
+* id: number
+* items: string with value "release" or "track"
+* buylink: string with values "on" or "off"
+
 After you filled out the form, click on insert shortcode and publish the page/post.
-
-= How does the sound player work? =
-
-The sound player works when fetching tracks from the api. It uses a JavaScript plugin called Sound Manager 2. When you hover over the track art, it shows an overlay over the cover and a play button. After clicking the mouse it will play the sample from Beatport.com and change the icon to a pause button.
 
 == Screenshots ==
 
@@ -94,6 +105,16 @@ The sound player works when fetching tracks from the api. It uses a JavaScript p
 6. Public view of the tracks list
 
 == Changelog ==
+
+= 1.3.1 =
+
+* Bug fixes
+
+= 1.3.0 =
+
+* Bug fixes
+* New url to get the json feed from
+* Soundplayer has been temporarily removed because beatport removed the samples urls.
 
 = 1.2.0 = 
 
