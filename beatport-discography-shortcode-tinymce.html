@@ -102,7 +102,9 @@
 
 			jQuery('.idfeed').blur(function(){
 				if(jQuery(this).val() != ''){
-					jQuery('.step-3').show();					
+					jQuery('.step-3').show();	
+					jQuery('input.trackitems').removeAttr('checked');
+					jQuery('.trackitems').hide();				
 				}else{
 					jQuery('.step-3').hide();
 				}
@@ -288,16 +290,16 @@
 		<fieldset class="step-3">
 			<legend>Step 3 - Items you would like displayed</legend>
 			<ul class="inputs-list">
-					<li>
+					<li class="releaseitems">
 						<label>
 							<span class="span2">Releases</span>
-							<input type="radio" name="items" value="release" />
+							<input type="radio" name="items" value="release" class="releaseitems"/>
 						</label>
 					</li>
-					<li>
+					<li class="trackitems">
 						<label>
 							<span class="span2">Tracks</span>
-							<input type="radio" name="items" value="track" />
+							<input type="radio" name="items" value="track" class="trackitems"/>
 						</label>
 					</li>
 					<li>

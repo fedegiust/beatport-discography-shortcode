@@ -212,12 +212,7 @@ class BeatportDiscography_shortcode {
 					$output .= '<li class="beatport-discography-results-">' . PHP_EOL;
 					$output .= '<div id="release' . $dataArray['results'][$i] -> catalogNumber . '" class="beatport-discography-results-release">' . PHP_EOL;
 					$output .= '<div class="beatport-discography-results-art">' . PHP_EOL;
-					// The sound player is temporarily disabled because beatport removed the samples from the api.
-					// if($soundPlayer == 'on'){
-					// 	$output .= '<a href="' . $dataArray['results'][$i] -> sampleUrl . '" class="beatportsample">' . PHP_EOL;
-					// 	$output .= '<div class="beatport-discography-results-coveroverlay"></div>' . PHP_EOL;			
-					// 	$output .= '</a>' . PHP_EOL;
-					// }		
+	
 					$output .= '<img src="' . $dataArray['results'][$i] -> images -> medium -> url . '"/>' . PHP_EOL;
 									
 					$output .= '</div>' . PHP_EOL;
