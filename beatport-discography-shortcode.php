@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Beatport Discography shortcode
-Plugin URI: http://www.federicogiust.com/
+Plugin URI: http://wordpress.org/plugins/beatport-discography-shortcode/
 Description: Embed Beatport Discography using shortcodes
-Version: 1.3.0
+Version: 1.3.1
 Author: Federico Giust
-Author URI: http://www.federicogiust.com
+Author URI: https://github.com/fedegiust
 License: GPL2
 
 Copyright 2013 Federico Giust  (email : info@federicogiust.com)
@@ -24,7 +24,7 @@ if (!class_exists('BeatportDiscography_shortcode')):
 
 class BeatportDiscography_shortcode {
 
-	var $plugin_version = '130'; // version 1.3.0
+	var $plugin_version = '131'; // version 1.3.1
 
 	/**
 	* Constructor / Initialize the plugin
