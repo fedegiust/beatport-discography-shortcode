@@ -3,7 +3,7 @@
 Plugin Name: Beatport Discography shortcode
 Plugin URI: http://wordpress.org/plugins/beatport-discography-shortcode/
 Description: Embed Beatport Discography using shortcodes
-Version: 1.3.1
+Version: 1.3.2
 Author: Federico Giust
 Author URI: https://github.com/fedegiust
 License: GPL2
@@ -24,7 +24,7 @@ if (!class_exists('BeatportDiscography_shortcode')):
 
 class BeatportDiscography_shortcode {
 
-	var $plugin_version = '131'; // version 1.3.1
+	var $plugin_version = '132'; // version 1.3.2
 
 	/**
 	* Constructor / Initialize the plugin
@@ -146,6 +146,20 @@ class BeatportDiscography_shortcode {
 		return $output;
 	}
 
+	function validateData(array $dataArray){
+		
+		$error = '';
+
+		if ( empty($dataArray) || is_null($dataArray)) {
+			$error .= 'No results found. Please verify your shortcode.<br />' . PHP_EOL;
+		}
+
+		if( $error != '' ){
+			return $error;
+		}
+
+	}
+
 
 	/**
 	* Generate unordered list with the items from the feed.
@@ -160,6 +174,12 @@ class BeatportDiscography_shortcode {
 		$output .= '<div id="beatport-discography-results">' . PHP_EOL;
 		$output .= '<ul class="beatport-discography-results-list">' . PHP_EOL;
 		if($feed == 'artist' || $feed == 'label' ){
+
+			$error = $this->validateData($dataArray['results']);
+
+			if( !empty($error) ){
+				return $error;
+			}
 
 			if($items == 'release'){
 				/** If we want the releases we then use the releases object from the API (http://api.beatport.com/releases.html) */
@@ -257,11 +277,13 @@ class BeatportDiscography_shortcode {
 
 		}elseif ($feed == 'id') {
 
-			$beatport_url = 'https://www.beatport.com/';
+			$error = $this->validateData( (array) $dataArray['results'] -> release);
 
-			if (empty($dataArray['results'])) {
-				return 'Release not found';
+			if( !empty($error) ){
+				return $error;
 			}
+
+			$beatport_url = 'https://www.beatport.com/';
 
 			$metadata = $dataArray['results'] -> release;	
 
