@@ -24,18 +24,25 @@
 	</script>
 	<script type="text/javascript">
 	// <![CDATA[
+
+		function toTitleCase(str){
+		    return str.replace(/\w\S*/g, function(txt){
+		    	return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+		    });
+		}
 		jQuery(document).ready(function(){
 			jQuery('.labelfeed').prop('disabled', true);
 			jQuery('#soundPlayer').prop('disabled', true);
 			jQuery('.step-2').hide();
 			jQuery('.step-3').hide();
+			jQuery('#btnTry').hide();
 
 			jQuery('#artistfeed').click(function(){
 				jQuery('.labelfeed').val('');
 				jQuery('.idfeed').val('');
 				jQuery('.step-2').show();
 				jQuery('.labelfeed').prop('disabled', true);
-				
+				jQuery('#artistfeed').attr('checked','checked');
 				jQuery('.artistfeed').prop('disabled', false);
 				
 				jQuery('.idfeed').prop('disabled', true);
@@ -48,8 +55,12 @@
 				jQuery('#buylink').removeAttr('checked');
 				//jQuery('input[name=items]').val('');
 				jQuery('input[name=items]').removeAttr('checked');
+				jQuery('#btnTry').hide();
+
 			});
 			jQuery('#labelfeed').click(function(){
+				jQuery('#labelfeed').attr('checked','checked');
+
 				jQuery('.artistfeed').val('');
 				jQuery('.idfeed').val('');
 				jQuery('.labelfeed').prop('disabled', false);
@@ -64,9 +75,12 @@
 				jQuery('#buylink').removeAttr('checked');
 				//jQuery('input[name=items]').val('');
 				jQuery('input[name=items]').removeAttr('checked');
+				jQuery('#btnTry').hide();
+				
 			});
 
 			jQuery('#idfeed').click(function(){
+				jQuery('#idfeed').attr('checked','checked');
 				jQuery('.artistfeed').val('');
 				jQuery('.labelfeed').val('');
 				jQuery('.labelfeed').prop('disabled', true);
@@ -81,11 +95,15 @@
 				jQuery('#buylink').removeAttr('checked');
 				//jQuery('input[name=items]').val('');
 				jQuery('input[name=items]').removeAttr('checked');
+				jQuery('#btnTry').hide();
 				
 			});
 
 			jQuery('.artistfeed').blur(function(){
 				if(jQuery(this).val() != ''){
+					jQuery(this).val(toTitleCase(jQuery(this).val()));
+					jQuery(this).val(jQuery(this).val().replace(' ', '+'));
+					jQuery('#btnTry').show();
 					jQuery('.step-3').show();
 				}else{
 					jQuery('.step-3').hide();
@@ -94,6 +112,9 @@
 
 			jQuery('.labelfeed').blur(function(){
 				if(jQuery(this).val() != ''){
+					jQuery(this).val(toTitleCase(jQuery(this).val()));
+					jQuery(this).val(jQuery(this).val().replace(' ', '+'));
+					jQuery('#btnTry').show();
 					jQuery('.step-3').show();
 				}else{
 					jQuery('.step-3').hide();
@@ -104,6 +125,7 @@
 				if(jQuery(this).val() != ''){
 					jQuery('.step-3').show();	
 					jQuery('input.trackitems').removeAttr('checked');
+					jQuery('#btnTry').show();
 					jQuery('.trackitems').hide();				
 				}else{
 					jQuery('.step-3').hide();
@@ -111,7 +133,7 @@
 			});
 
 			jQuery('input[name=items]').click(function(){
-				console.log(jQuery(this).val());
+				
 				if(jQuery(this).val() == 'release'){
 					
 					jQuery('#soundPlayer').removeAttr('checked');
@@ -120,6 +142,96 @@
 
 					jQuery('#soundPlayer').prop('disabled', false);
 				}
+
+			});
+
+			jQuery('#btnTry').click(function(){
+
+				var url = 'http://www.federicogiust.com/beatportapi/beatport_api.php';
+				var feed = jQuery('input[name=feed]:checked', '#beatport-discography-shortcode').val();
+
+				if( feed == 'artist' ){
+					// http://www.federicogiust.com/beatportapi/beatport_api.php?facets=artistName:Federico+Giust&sortBy=publishDate%20desc&perPage=150&url=releases
+					// http://www.federicogiust.com/beatportapi/beatport_api.php?facets=artistName:Federico+Giust&sortBy=publishDate%20desc&perPage=150&url=tracks
+					var artist = jQuery('input[name=artist]').val();
+					var items = jQuery('input[name=items]').val();
+
+					if(artist != ''){
+
+						jQuery('#preloader_container').show();
+						jQuery('#trycode').show();
+						jQuery('#results').empty();
+
+						if( items == 'release' ){
+							url = url + '?facets=artistName:' + artist + '&sortBy=publishDate%20desc&perPage=150&url=releases';
+						}else if( items == 'track' ){
+							url = url + '?facets=artistName:' + artist + '&sortBy=publishDate%20desc&perPage=150&url=tracks';
+						}
+
+					
+					}
+
+
+				}else if( feed == 'label' ){
+					// http://www.federicogiust.com/beatportapi/beatport_api.php?facets=labelName:Quimika+Records&sortBy=publishDate%20desc&perPage=150&url=releases
+					// http://www.federicogiust.com/beatportapi/beatport_api.php?facets=labelName:Quimika+Records&sortBy=publishDate%20desc&perPage=150&url=tracks
+					var label = jQuery('input[name=label]').val();
+					var items = jQuery('input[name=items]').val();
+
+					if(label != ''){
+
+						jQuery('#preloader_container').show();
+						jQuery('#trycode').show();
+						jQuery('#results').empty();
+
+						if( items == 'release' ){
+							url = url + '?facets=labelName:' + label + '&sortBy=publishDate%20desc&perPage=150&url=releases';
+						}else if( items == 'track' ){
+							url = url + '?facets=labelName:' + label + '&sortBy=publishDate%20desc&perPage=150&url=tracks';
+						}
+
+					
+					}
+
+				}else if( feed = 'id' ){
+					// ?id=5123727&url=beatport/release
+					var id = jQuery('input[name=id]').val();
+					var items = jQuery('input[name=items]').val();
+					if(id != ''){
+
+						jQuery('#preloader_container').show();
+						jQuery('#trycode').show();
+						jQuery('#results').empty();
+
+						if( items == 'release' ){
+							url = url + '?id=' + id + '&sortBy=publishDate%20desc&perPage=150&url=releases';
+						}else if( items == 'track' ){
+							url = url + '?id=' + id + '&sortBy=publishDate%20desc&perPage=150&url=tracks';
+						}
+					}
+				}
+
+				console.log('http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent('select * from json where url="' + url + '"') + '&format=json&callback=');
+
+				jQuery.ajax({
+				  	type: 'GET',
+			      	crossDomain: true,
+		  			url: 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent('select * from json where url="' + url + '"') + '&format=json&callback=',
+				  	
+				  	dataType: 'JSON',
+				  	success: function(data){
+				  		//console.log(data.query.results.json);
+
+				  		var jsonData = data.query.results.json;
+
+				  		var jsonDataString = JSON.stringify(jsonData);
+
+						jQuery('#preloader_container').hide();
+						jQuery('#results').html('<pre>' + jsonDataString + '</pre>');
+				  	}
+
+				});	
+
 
 			});
 
@@ -205,6 +317,9 @@
 
 				tinyMCEPopup.resizeToInnerSize();
 			});
+
+
+
 	// ]]> 
 	</script>
 	<style type="text/css">
@@ -222,11 +337,26 @@
     	.step-2 { display: none;}
     	.step-3 { display: none;}
     	.release-track-id-feed { display: none;}
+    	#trycode {
+    		display: none;
+    		width: 100%;
+    	}
+    	#preloader_container{
+    		display: none;
+    		width: 100%;
+    		text-align: center;
+    	}
+    	#results{
+			display: inline-block;
+			overflow-x: scroll;
+			width: 100%;
+			height: 100px;
+    	}
 	</style>
 </head>
 <body>
 
-	<form class="form-stacked" action="#">
+	<form id="beatport-discography-shortcode" class="form-stacked" action="#">
 		<fieldset>
 			<legend>Beatport Artist Discography Shortcode</legend>
 			<br />
@@ -312,7 +442,14 @@
 
 			</ul>
 		</fieldset>
+		<div id="trycode">
+			<div id="preloader_container">
+				<img id="preloader" src="images/rectangular_preloader.gif" />
+			</div>
+			<div id="results"></div>
+		</div>
 		<div class="actions">
+            <input type="button" id="btnTry" value="Try shortcode" class="btn primary"/>
             <input type="submit" value="Insert shortcode" class="btn primary"/>
             or
             <input class="btn" type="reset" value="Reset settings"/>

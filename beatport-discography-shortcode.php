@@ -437,6 +437,9 @@ class BeatportDiscography_shortcode {
 			$qrystring = '?id=' . str_replace(' ', '+', $atts['id']).'';
 		}
 
+		if($_GET['debug'] == 'y'){
+			echo $urlhost . $qrystring . '&url=' . $url;
+		}
 		$dataArray = $this->getData($urlhost, $qrystring . '&url=' . $url);
 
 		$output .= $this->getRenderedFeed($atts['items'], $atts['feed'], $atts['soundplayer'], $atts['buylink'], $dataArray);
