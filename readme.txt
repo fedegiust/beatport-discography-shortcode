@@ -110,6 +110,8 @@ After you filled out the form, click on insert shortcode and publish the page/po
 
 * Bug fixes
 * Make sure we display an error message when no results were returned.
+* Add a try shortocde button on the plugin panel to test the shortcode and show the JSON result to make sure we get a correct result
+* Make sure we format the Artist Name and Label Name correctly when setting up the shortcode.
 
 = 1.3.1 =
 
