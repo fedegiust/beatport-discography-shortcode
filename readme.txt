@@ -98,11 +98,13 @@ After you filled out the form, click on insert shortcode and publish the page/po
 == Screenshots ==
 
 1. New button on toolbar
-2. Form
-3. Shortcode on post or page
-4. Public view of the releases list
-5. Public view of the release details
-6. Public view of the tracks list
+2. Shortcode setup form
+3. Shortcode setup form
+4. Shortcode setup form with test results
+5. Shortcode on post or page
+6. Public view of the releases list
+7. Public view of the release details
+8. Public view of the tracks list
 
 == Changelog ==
 
