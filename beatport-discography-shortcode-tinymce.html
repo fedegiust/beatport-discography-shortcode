@@ -4,6 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Beatport Discography Shortcode</title>
 	<script type="text/javascript" src="../../../wp-includes/js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="bootstrap-typeahead.js"></script>
 	<script type="text/javascript">
 	// <![CDATA[
 		!function(){
@@ -23,33 +24,214 @@
 	</script>
 	<script type="text/javascript">
 	// <![CDATA[
+
+		function toTitleCase(str){
+		    return str.replace(/\w\S*/g, function(txt){
+		    	return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+		    });
+		}
 		jQuery(document).ready(function(){
 			jQuery('.labelfeed').prop('disabled', true);
 			jQuery('#soundPlayer').prop('disabled', true);
+			jQuery('.step-2').hide();
+			jQuery('.step-3').hide();
+			jQuery('#btnTry').hide();
 
 			jQuery('#artistfeed').click(function(){
 				jQuery('.labelfeed').val('');
+				jQuery('.idfeed').val('');
+				jQuery('.step-2').show();
 				jQuery('.labelfeed').prop('disabled', true);
+				jQuery('#artistfeed').attr('checked','checked');
 				jQuery('.artistfeed').prop('disabled', false);
+				
+				jQuery('.idfeed').prop('disabled', true);
+				jQuery('.artistfeed').show();
+				jQuery('.labelfeed').hide();
+				jQuery('.idfeed').hide();
+				jQuery('.step-2').show();
+				jQuery('.step-3').hide();
+				jQuery('#soundPlayer').removeAttr('checked');
+				jQuery('#buylink').removeAttr('checked');
+				//jQuery('input[name=items]').val('');
+				jQuery('input[name=items]').removeAttr('checked');
+				jQuery('#btnTry').hide();
+
 			});
 			jQuery('#labelfeed').click(function(){
+				jQuery('#labelfeed').attr('checked','checked');
+
 				jQuery('.artistfeed').val('');
+				jQuery('.idfeed').val('');
 				jQuery('.labelfeed').prop('disabled', false);
 				jQuery('.artistfeed').prop('disabled', true);
+				jQuery('.idfeed').prop('disabled', true);
+				jQuery('.artistfeed').hide();
+				jQuery('.labelfeed').show();
+				jQuery('.idfeed').hide();
+				jQuery('.step-2').show();
+				jQuery('.step-3').hide();
+				jQuery('#soundPlayer').removeAttr('checked');
+				jQuery('#buylink').removeAttr('checked');
+				//jQuery('input[name=items]').val('');
+				jQuery('input[name=items]').removeAttr('checked');
+				jQuery('#btnTry').hide();
+				
+			});
+
+			jQuery('#idfeed').click(function(){
+				jQuery('#idfeed').attr('checked','checked');
+				jQuery('.artistfeed').val('');
+				jQuery('.labelfeed').val('');
+				jQuery('.labelfeed').prop('disabled', true);
+				jQuery('.artistfeed').prop('disabled', true);
+				jQuery('.idfeed').prop('disabled', false);
+				jQuery('.artistfeed').hide();
+				jQuery('.labelfeed').hide();
+				jQuery('.idfeed').show();
+				jQuery('.step-2').show();
+				jQuery('.step-3').hide();
+				jQuery('#soundPlayer').removeAttr('checked');
+				jQuery('#buylink').removeAttr('checked');
+				//jQuery('input[name=items]').val('');
+				jQuery('input[name=items]').removeAttr('checked');
+				jQuery('#btnTry').hide();
+				
+			});
+
+			jQuery('.artistfeed').blur(function(){
+				if(jQuery(this).val() != ''){
+					jQuery(this).val(toTitleCase(jQuery(this).val()));
+					jQuery(this).val(jQuery(this).val().replace(' ', '+'));
+					jQuery('#btnTry').show();
+					jQuery('.step-3').show();
+				}else{
+					jQuery('.step-3').hide();
+				}
+			});
+
+			jQuery('.labelfeed').blur(function(){
+				if(jQuery(this).val() != ''){
+					jQuery(this).val(toTitleCase(jQuery(this).val()));
+					jQuery(this).val(jQuery(this).val().replace(' ', '+'));
+					jQuery('#btnTry').show();
+					jQuery('.step-3').show();
+				}else{
+					jQuery('.step-3').hide();
+				}
+			});
+
+			jQuery('.idfeed').blur(function(){
+				if(jQuery(this).val() != ''){
+					jQuery('.step-3').show();	
+					jQuery('input.trackitems').removeAttr('checked');
+					jQuery('#btnTry').show();
+					jQuery('.trackitems').hide();				
+				}else{
+					jQuery('.step-3').hide();
+				}
 			});
 
 			jQuery('input[name=items]').click(function(){
-				if(jQuery(this).val() == 'releases'){
-					console.log(jQuery(this).val());
+				
+				if(jQuery(this).val() == 'release'){
+					
 					jQuery('#soundPlayer').removeAttr('checked');
 					jQuery('#soundPlayer').prop('disabled', true);
 				}else{
-					console.log(jQuery(this).val());
+
 					jQuery('#soundPlayer').prop('disabled', false);
 				}
 
 			});
 
+			jQuery('#btnTry').click(function(){
+
+				var url = 'http://www.federicogiust.com/beatportapi/beatport_api.php';
+				var feed = jQuery('input[name=feed]:checked', '#beatport-discography-shortcode').val();
+
+				if( feed == 'artist' ){
+
+					var artist = jQuery('input[name=artist]').val();
+					var items = jQuery('input[name=items]').val();
+
+					if(artist != ''){
+
+						jQuery('#preloader_container').show();
+						jQuery('#trycode').show();
+						jQuery('#results').empty();
+
+						if( items == 'release' ){
+							url = url + '?facets=artistName:' + artist + '&sortBy=publishDate%20desc&perPage=150&url=releases';
+						}else if( items == 'track' ){
+							url = url + '?facets=artistName:' + artist + '&sortBy=publishDate%20desc&perPage=150&url=tracks';
+						}
+
+					
+					}
+
+
+				}else if( feed == 'label' ){
+
+					var label = jQuery('input[name=label]').val();
+					var items = jQuery('input[name=items]').val();
+
+					if(label != ''){
+
+						jQuery('#preloader_container').show();
+						jQuery('#trycode').show();
+						jQuery('#results').empty();
+
+						if( items == 'release' ){
+							url = url + '?facets=labelName:' + label + '&sortBy=publishDate%20desc&perPage=150&url=releases';
+						}else if( items == 'track' ){
+							url = url + '?facets=labelName:' + label + '&sortBy=publishDate%20desc&perPage=150&url=tracks';
+						}
+
+					
+					}
+
+				}else if( feed = 'id' ){
+					// ?id=5123727&url=beatport/release
+					var id = jQuery('input[name=id]').val();
+					var items = jQuery('input[name=items]').val();
+					if(id != ''){
+
+						jQuery('#preloader_container').show();
+						jQuery('#trycode').show();
+						jQuery('#results').empty();
+
+						if( items == 'release' ){
+							url = url + '?id=' + id + '&sortBy=publishDate%20desc&perPage=150&url=releases';
+						}else if( items == 'track' ){
+							url = url + '?id=' + id + '&sortBy=publishDate%20desc&perPage=150&url=tracks';
+						}
+					}
+				}
+
+				console.log('http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent('select * from json where url="' + url + '"') + '&format=json&callback=');
+
+				jQuery.ajax({
+				  	type: 'GET',
+			      	crossDomain: true,
+		  			url: 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent('select * from json where url="' + url + '"') + '&format=json&callback=',
+				  	
+				  	dataType: 'JSON',
+				  	success: function(data){
+				  		//console.log(data.query.results.json);
+
+				  		var jsonData = data.query.results.json;
+
+				  		var jsonDataString = JSON.stringify(jsonData);
+
+						jQuery('#preloader_container').hide();
+						jQuery('#results').html('<pre>' + jsonDataString + '</pre>');
+				  	}
+
+				});	
+
+
+			});
 
 		});
 
@@ -70,21 +252,44 @@
 								.replace(/\//g, "%2F");
 				},
 
+				toTitleCase = function (str)
+				{
+				    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+				},
+
 				insertShortcode = function(e){
 					var sc = "[beatport_discography_sc ",
 						inputs = form.elements, input, inputName, inputValue,
 						l = inputs.length, i = 0;
 
+					feed = jQuery('input[name=feed]:checked').val();
+
+					if (feed == 'artist') {
+						value = jQuery('input[name=artist]').val();
+						if (isEmpty(value)) {
+							alert("You need to introduce an artist name.");
+							return false;
+						}
+					}
+					else if (feed == 'label') {
+						value = jQuery('input[name=label]').val();
+						if (isEmpty(value)) {
+							alert("You need to introduce a label name.");
+							return false;
+						}
+					}
+					else if (feed == 'id') {
+						value = jQuery('input[name=id]').val();
+						if (isEmpty(value)) {
+							alert("You need to introduce an id of the release or track.");
+							return false;
+						}
+					}
+
 					for ( ; i < l; i++) {
 						input = inputs[i];
 						inputName = input.name;
 						inputValue = input.value;
-
-						// Artist Name 
-						if ((inputName == "label" && isEmpty(inputValue)) && (inputName == "artist" && isEmpty(inputValue)) ){
-							alert("You need to introduce an artist name.");
-							return false;
-						}
 
 						// inputs of type "checkbox", "radio" and "text"
 						if (input.checked || (input.type == "text" && !isEmpty(inputValue) && inputValue != input.defaultValue)) {
@@ -107,6 +312,9 @@
 
 				tinyMCEPopup.resizeToInnerSize();
 			});
+
+
+
 	// ]]> 
 	</script>
 	<style type="text/css">
@@ -121,48 +329,82 @@
     	.form-stacked .inputs-list:first-child {padding-top:0;}
     	.form-stacked .deprecated{font-style:italic;color:orange}
     	.form-stacked .required{color:red}
+    	.step-2 { display: none;}
+    	.step-3 { display: none;}
+    	.release-track-id-feed { display: none;}
+    	#trycode {
+    		display: none;
+    		width: 100%;
+    	}
+    	#preloader_container{
+    		display: none;
+    		width: 100%;
+    		text-align: center;
+    	}
+    	#results{
+			display: inline-block;
+			overflow-x: scroll;
+			width: 100%;
+			height: 100px;
+    	}
 	</style>
 </head>
 <body>
 
-	<form class="form-stacked" action="#">
+	<form id="beatport-discography-shortcode" class="form-stacked" action="#">
 		<fieldset>
 			<legend>Beatport Artist Discography Shortcode</legend>
 			<br />
-			<fieldset>
-				<legend>Select type of feed.</legend>
+			<fieldset class="step-1">
+				<legend>Step 1 - Select type of feed.</legend>
 				<ul class="inputs-list">
 					<li>
 						<label>
 							<span class="span2">Artist</span>
-							<input type="radio" name="feed" id="artistfeed" value="artist" checked="checked"/>
+							<input type="radio" name="feed" id="artistfeed" value="artist"/>
+							<span class="help-inline">(Get list of tracks/releases by Artist Name)</span>
 						</label>
 					</li>
 					<li>
 						<label>
 							<span class="span2">Record Label</span>
 							<input type="radio" name="feed" id="labelfeed" value="label"/>
+							<span class="help-inline">(Get list of tracks/releases by Record Label Name)</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<span class="span2">Release (Detailed)</span>
+							<input type="radio" name="feed" id="idfeed" value="id"/>
+							<span class="help-inline">(Get a detailed view of a release by Release Id)</span>
 						</label>
 					</li>
 				</ul>	
 			</fieldset>
-			<fieldset>
-				<legend></legend>
+			<fieldset class="step-2">
+				<legend>Step 2</legend>
 				<p>The minimum required fields are: Artist Name or Record Label Name</p>
 				<div class="clearfix">
 					<ul class="inputs-list">
-						<li>
+						<li class="artistfeed">
 							<label>
 								<span class="span2">Artist Name<span class="required">*</span></span>
 								<input type="text" name="artist" class="span4 artistfeed"/>
 								<span class="help-inline">Artist name exactly as it appears on Beatport.</span>
 							</label>
 						</li>
-						<li>
+						<li class="labelfeed">
 							<label>
 								<span class="span2">Label Name<span class="required">*</span></span>
 								<input type="text" name="label" class="span4 labelfeed"/>
 								<span class="help-inline">Label Name exactly as it appears on Beatport.</span>
+							</label>
+						</li>
+						<li class="idfeed">
+							<label>
+								<span class="span2">Release Id<span class="required">*</span></span>
+								<input type="text" name="id" class="span4 idfeed"/>
+								<span class="help-inline">Release Id exactly as it appears on Beatport.</span>
 							</label>
 						</li>
 
@@ -170,26 +412,32 @@
 				</div>
 			</fieldset>
 		</fieldset>
-		<fieldset>
-			<legend>Items you would like displayed</legend>
+		<fieldset class="step-3">
+			<legend>Step 3 - Items you would like displayed</legend>
 			<ul class="inputs-list">
 					<li>
 						<label>
-							<span class="span2">Releases</span>
-							<input type="radio" name="items" value="releases" checked="checked"/>
+							<span class="span2">Artist Bio</span>
+							<input type="radio" name="items" value="biography" class="biography"/>
 						</label>
 					</li>
-					<li>
+					<li class="releaseitems">
+						<label>
+							<span class="span2">Releases</span>
+							<input type="radio" name="items" value="release" class="releaseitems"/>
+						</label>
+					</li>
+					<li class="trackitems">
 						<label>
 							<span class="span2">Tracks</span>
-							<input type="radio" name="items" value="tracks"/>
+							<input type="radio" name="items" value="track" class="trackitems"/>
 						</label>
 					</li>
 					<li>
 						<label>
 							<span class="span2">Sound Player</span>
-							<input type="checkbox" name="soundplayer" id="soundPlayer"/>
-							<span class="help-inline">Uses Sound Manager 2 JavaScript plugin to play audio samples</span>
+							<input type="checkbox" name="soundPlayer" id="soundPlayer"/>
+							<span class="help-inline">Enable/Disable sound player.</span>
 						</label>
 					</li>
 					<li>
@@ -199,31 +447,17 @@
 							<span class="help-inline">Enable/Disable Buy on beatport.com link.</span>
 						</label>
 					</li>										
-					<fieldset>
-						<legend>Hits Per Page</legend>
-						<li>
-							<label>
-								<span class="span2">50</span>
-								<input type="radio" name="perpage" value="50"/>
-							</label>
-						</li>
-						<li>
-							<label>
-								<span class="span2">100</span>
-								<input type="radio" name="perpage" value="100"/>
-							</label>
-						</li>
-						<li>
-							<label>
-								<span class="span2">150</span>
-								<input type="radio" name="perpage" value="150"/>
-							</label>
-						</li>
-					</fieldset>
 
 			</ul>
 		</fieldset>
+		<div id="trycode">
+			<div id="preloader_container">
+				<img id="preloader" src="images/rectangular_preloader.gif" />
+			</div>
+			<div id="results"></div>
+		</div>
 		<div class="actions">
+            <input type="button" id="btnTry" value="Try shortcode" class="btn primary"/>
             <input type="submit" value="Insert shortcode" class="btn primary"/>
             or
             <input class="btn" type="reset" value="Reset settings"/>

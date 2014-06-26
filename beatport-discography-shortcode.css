@@ -1,36 +1,40 @@
-.release{
+.beatport-discography-results{
+    width: 100%;
+}
+
+.beatport-discography-results-release{
     margin-top: 10px;
     margin-bottom: 10px;
 }
-.releaselist{
+.beatport-discography-results-list{
     list-style: none;
     padding: 0;
     margin: 0;
 }
-.releaserow{
+.beatport-discography-results-row{
     float: left;
-    width: 480px;
+    width: 100%;
     border-bottom: 1px solid #ededed
 }
-.releaseart{
+.beatport-discography-results-art{
     float: left;
     padding-right: 8px;
     padding-top: 5px;
     width: 60px;
     height: 60px;
 }
-.releaseinfo{
+.beatport-discography-results-releaseinfo{
     white-space: normal;
     overflow: hidden;
     font-size: .9em;
 }
-.releaseartists{
+.beatport-discography-results-releaseartists{
     white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.3em;
 }
-.coveroverlay{
+.beatport-discography-results-coveroverlay{
     display: inline-block;
     position: absolute;
     height: 60px;
@@ -39,36 +43,245 @@
     opacity: 0;
 }
 
-.coveroverlay:hover {
+.beatport-discography-results-coveroverlay:hover {
     opacity: 1;
     height: 60px;
     width: 60px;
 
     background-repeat: no-repeat;
 }
-a.sm2_paused:hover .coveroverlay:hover,
-a.sm2_link:hover .coveroverlay:hover{
+
+
+div.beatport-discography-results-album-intro h1{
+    margin: 0;
+}
+
+div.beatport-discography-results-album-title p {
+    font-weight: bold;
+    margin: 0;
+}
+
+div.beatport-discography-results-album-artist {
+    position: relative;
+    width: auto;
+    text-align: left;
+    max-width: 70%; 
+}
+
+div.beatport-discography-results-coverart-wrapper {
+    width: 40%;
+    height: 40%;
+    text-align: center;
+    float: left;
+    display: inline-block;
+    position: relative;
+}
+
+div.beatport-discography-results-coverart-wrapper img {
+    width: 100%;
+}
+
+div.beatport-discography-results-description {
+    float: left;
+    width: 55%;
+    position: relative;
+    margin-left: 1.5em;
+}
+
+table.beatport-discography-results-meta-data {
+    margin: 0 0 1em;
+}
+
+div.beatport-discography-results-description table {
+    width: 100%;
+}
+
+div.beatport-discography-results-description-album {
+    width: auto;
+    float: right;
+}
+
+div.beatport-discography-results-description-album p, div.beatport-discography-results-release-tracks {
+    font-size: 0.8em;
+}
+
+div.beatport-discography-results-release-tracks {
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+div.beatport-discography-results-release-tracks {
+    /*background: #ddd;*/
+    border-top: 1px solid rgb(208, 217, 219);
+    border-bottom: 1px solid rgb(208, 217, 219);
+
+    padding: 2px;
+}
+
+table.beatport-discography-results-tracks {
+    border: 1px solid rgb(208, 217, 219);
+    margin: 0;
+}
+
+tr.beatport-discography-results-track-odd {
+    background-color: rgb(234, 224, 238);
+}
+
+tr.beatport-discography-results-track-even {
+    background-color: rgb(249, 255, 215);
+}
+
+td.beatport-discography-results-track-number {
+    width: 30px;
+    padding-left: 10px;
+    font-weight: bolder;
+}
+
+td.beatport-discography-results-track-timing {
+    min-width: 110px;
+}
+
+td.beatport-discography-results-track-artists {
+    padding-top: 5px;
+    padding-left: 10px;
+    min-width: 200px;
+}
+
+td.beatport-discography-results-track-price {
+    font-weight: bolder;
+    text-align: right;
+    padding-right: 20px;
+}
+
+.track-number {
+display: inline-block;
+width: 2%;
+}
+
+.track-title {
+display: inline-block;
+width: 70%;
+}
+
+.track-artists {
+display: inline-block;
+margin-left: 2.5%;
+width: 70%;
+}
+
+
+a.sm2_paused:hover .beatport-discography-results-coveroverlay:hover,
+a.sm2_link:hover .beatport-discography-results-coveroverlay:hover{
  background-image:url(image/icon-play.png);
  background-position:50% 50%;
  background-repeat:no-repeat;
  _background-image:url(image/icon-play.gif); /* IE 6 */
 }
-a.sm2_link:hover .coveroverlay:hover{
+a.sm2_link:hover .beatport-discography-results-coveroverlay:hover{
  /* default hover color, if you'd like.. */
  background-color: transparent;
  color:#fff;
 }
-a.sm2_paused .coveroverlay{
+a.sm2_paused .beatport-discography-results-coveroverlay{
  background-color: transparent;
 }
-a.sm2_paused:hover .coveroverlay:hover{
+a.sm2_paused:hover .beatport-discography-results-coveroverlay:hover{
  background:transparent url(image/icon-play.png) no-repeat 50% 50%;
  _background-image:url(image/icon-play.gif);
 }
-a.sm2_playing .coveroverlay,
-a.sm2_playing:hover .coveroverlay:hover{
+a.sm2_playing .beatport-discography-results-coveroverlay,
+a.sm2_playing:hover .beatport-discography-results-coveroverlay:hover{
  background:transparent url(image/icon-pause.png) no-repeat 50% 50%;
  _background-image:url(image/icon-pause.gif);
  text-decoration:none;
 }
 
+/* Smartphones (portrait and landscape) ----------- */
+@media screen and (min-width : 320px) and (max-width : 700px) {
+/* Styles */
+    div.beatport-discography-results-coverart-wrapper {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        float: none;
+        display: inline-block;
+        position: relative;
+    }
+
+    div.beatport-discography-results-coverart-wrapper img {
+        width: 100%;
+    }
+
+    div.beatport-discography-results-description {
+        float: none;
+        width: 100%;
+        position: relative;
+        margin-left: 0em;
+    }
+
+    div.beatport-discography-results-description-album p {
+        font-size: 0.8em;
+    }
+
+    div.beatport-discography-results-album-artist {
+        position: relative;
+        width: auto;
+        text-align: left;
+        max-width: 100%; 
+    }
+
+    div.beatport-discography-results-releaseinfo {
+        margin: 0 2.571428571rem 0 0;
+    }
+}
+
+/* Smartphones (landscape) ----------- */
+@media screen and (min-width : 321px) {
+/* Styles */
+
+
+}
+
+/* Smartphones (portrait) ----------- */
+@media screen and (max-width : 320px) {
+/* Styles */
+
+}
+
+/* Smartphones (landscape) ----------- */
+@media screen and (min-width : 600px) and (max-width: 700px) {
+/* Styles */
+
+
+}
+
+
+/* iPads (portrait and landscape) ----------- */
+@media screen and (min-width : 768px) and (max-width : 1024px) {
+/* Styles */
+}
+
+/* iPads (landscape) ----------- */
+@media screen and (min-width : 768px) and (max-width : 1024px) and (orientation : landscape) {
+/* Styles */
+}
+
+/* iPads (portrait) ----------- */
+@media screen and (min-width : 768px) and (max-width : 1024px) and (orientation : portrait) {
+/* Styles */
+}
+
+/* Desktops and laptops ----------- */
+@media screen and (min-width : 1024px) {
+/* Styles */
+}
+
+/* Large screens ----------- */
+@media screen and (min-width : 1824px) {
+/* Styles */
+}
+
+/* iPhone 4 ----------- */
+@media screen and (-webkit-min-device-pixel-ratio : 1.5), screen and (min-device-pixel-ratio : 1.5) {
+/* Styles */
+}
