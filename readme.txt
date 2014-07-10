@@ -2,7 +2,7 @@
 Tags: beatport, discography, artist, dj, digital, electronic, music
 Requires at least: 3.4
 Tested up to: 3.8.1
-Stable tag: 1.3.2
+Stable tag: 1.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,13 @@ After you filled out the form, click on insert shortcode and publish the page/po
 8. Public view of the tracks list
 
 == Changelog ==
+
+= 1.3.3 =
+
+* Bug fixes.
+* Enable Sound Player again.
+* Uses cURL now to get the JSON content.
+* Add Artist Bio from the API.
 
 = 1.3.2 = 
 
