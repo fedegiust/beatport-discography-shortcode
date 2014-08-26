@@ -2,7 +2,7 @@
 Tags: beatport, discography, artist, dj, digital, electronic, music
 Requires at least: 3.4
 Tested up to: 3.8.1
-Stable tag: 1.3.4
+Stable tag: 1.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,6 +18,7 @@ There are three different types of feed:
 - Artist Feed
 	- You can get list of tracks or releases
 	- If getting list of tracks, you have the option to enable/disable the sound player.
+	- Artist Bio
 - Label Feed
 	- You can get list of tracks or releases
 	- If getting list of tracks, you have the option to enable/disable the sound player.
@@ -37,6 +38,7 @@ Done.
 
 This version will get a JSON object with the following information
 
+- Artist Biography
 - Release Detail
 - Release Art Cover
 - Release Artists (If it's a compilation, this will get an array with all artists included in the compilation)
@@ -98,22 +100,23 @@ After you filled out the form, click on insert shortcode and publish the page/po
 == Screenshots ==
 
 1. New button on toolbar
-2. Shortcode setup form
-3. Shortcode setup form
-4. Shortcode setup form with test results
-5. Shortcode on post or page
-6. Public view of the releases list
-7. Public view of the release details
-8. Public view of the tracks list
+2. Form
+3. Shortcode on post or page
+4. Public view of the releases list
+5. Public view of the release details
+6. Public view of the tracks list
 
 == Changelog ==
 
+= 1.3.5 =
+
+* Bug fixes
+
 = 1.3.3 =
 
-* Bug fixes.
-* Enable Sound Player again.
-* Uses cURL now to get the JSON content.
-* Add Artist Bio from the API.
+* Bug fixes
+* Add support for artist buigraphy
+* Enable sound player
 
 = 1.3.2 = 
 

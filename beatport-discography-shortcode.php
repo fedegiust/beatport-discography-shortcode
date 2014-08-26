@@ -3,7 +3,7 @@
 Plugin Name: Beatport Discography shortcode
 Plugin URI: http://wordpress.org/plugins/beatport-discography-shortcode/
 Description: Embed Beatport Discography using shortcodes
-Version: 1.3.3
+Version: 1.3.5
 Author: Federico Giust
 Author URI: http://www.tora-soft.com
 License: GPL2
@@ -24,7 +24,9 @@ if (!class_exists('BeatportDiscography_shortcode')):
 
 class BeatportDiscography_shortcode {
 
-	var $plugin_version = '132'; // version 1.3.2
+	var $plugin_version = '135'; // version 1.3.5
+	public $beatport_url = 'http://www.beatport.com/';
+	public $beatport_api_proxy = 'www.federicogiust.com/beatportapi/beatport_api.php';
 
 	/**
 	* Constructor / Initialize the plugin
@@ -81,7 +83,7 @@ class BeatportDiscography_shortcode {
 	* $short_info - boolean
 	*/
 	function pretty_print_tracks(array $dataArray, $short_info = False) {
-		$beatport_url = 'http://www.beatport.com/';
+
 
 		if (empty($dataArray)) {
 			return 'Release not found';
@@ -101,7 +103,7 @@ class BeatportDiscography_shortcode {
 			if (isset($track->mixName)) {
 				$title = str_replace('('.$track->mixName.')', '', $title);
 			}
-			$title_href = $beatport_url.'track/'.$track->slug.'/'.$track->id;
+			$title_href = $this->beatport_url.'track/'.$track->slug.'/'.$track->id;
 			$title_output = '<a target="_new" href="'.$title_href.'"><b>'.$title.'</b></a>';
 			if (isset($track->mixName)) {
 				$title_output .= ' <a target="_new" style="color:grey;" href="'.$title_href.'"> ( '.$track->mixName.' )</a>';
@@ -111,13 +113,13 @@ class BeatportDiscography_shortcode {
 
 				$artist_list = array();
 				foreach ($track->artists as $artist) {
-					$artist_list[] = '<a target="_new" href="'.$beatport_url.'artist/'.$artist->slug.'/'.$artist->id.'" >'.$artist->name.'</a>';
+					$artist_list[] = '<a target="_new" href="'.$this->beatport_url.'artist/'.$artist->slug.'/'.$artist->id.'" >'.$artist->name.'</a>';
 				}
 				$artist_output = implode(' ', $artist_list);
 
 				$genre_list = array();
 				foreach ($track->genres as $genre) {
-					$genre_list[] = '<a target="_new" href="'.$beatport_url.'genre/'.$genre->slug.'/'.$genre->id.'" >'.$genre->name.'</a>';
+					$genre_list[] = '<a target="_new" href="'.$this->beatport_url.'genre/'.$genre->slug.'/'.$genre->id.'" >'.$genre->name.'</a>';
 				}
 				$genre_output = implode(' ', $genre_list);
 			}
@@ -172,6 +174,7 @@ class BeatportDiscography_shortcode {
 	*/
 	function getRenderedFeed($items, $feed, $soundPlayer, $buylink = 'on', array $dataArray ){
 
+		$output = '';
 		$output .= '<div id="beatport-discography-results">' . PHP_EOL;
 		$output .= '<ul class="beatport-discography-results-list">' . PHP_EOL;
 		if($feed == 'artist' || $feed == 'label' ){
@@ -212,13 +215,21 @@ class BeatportDiscography_shortcode {
 					$output .= '</span>' . PHP_EOL;
 					$output .= '<br />' . PHP_EOL;
 					$output .= '<span class="beatport-discography-results-moreinfo">' . PHP_EOL;
+					$genreTemp = (array) $dataArray['results'][$i]->genres; 
+					for($j = 0; $j < count($genreTemp); $j++){
+						$output .= $genreTemp[$j]->name;
+						if(count($genreTemp)>0 && $j < count($genreTemp)-1){
+							$output .= ', ';
+						}
+					}
+					$output .= '<br />' . PHP_EOL;
 					$output .= $dataArray['results'][$i] -> catalogNumber . ' | ';
 					$output .= $dataArray['results'][$i] -> label -> name . ' | ';
 					$output .= $dataArray['results'][$i] -> releaseDate . PHP_EOL;
 					if($buylink == 'on'){
 						$output .= ' | <a href="https://www.beatport.com/release/' . $dataArray['results'][$i] -> slug . '/' . $dataArray['results'][$i] -> id . '" target="_new">Buy</a>';
 					}
-					$output .= $dataArray['results'][$i] -> genres -> name;
+
 					$output .= '</span>' . PHP_EOL;
 					$output .= '</div>' . PHP_EOL;
 					$output .= '</div>' . PHP_EOL;
@@ -305,8 +316,6 @@ class BeatportDiscography_shortcode {
 				return $error;
 			}
 
-			$beatport_url = 'https://www.beatport.com/';
-
 			$metadata = $dataArray['results'] -> release;	
 
 			$output = '';
@@ -320,7 +329,7 @@ class BeatportDiscography_shortcode {
 			$artist_list = array();
 			$artist_names = array();
 			foreach ($metadata->artists as $artist) {
-				$artist_list[] = '<a target="_new" href="'.$beatport_url.'artist/'.$artist->slug.'/'.$artist->id.'" >'.$artist->name.'</a>';
+				$artist_list[] = '<a target="_new" href="'.$this->beatport_url.'artist/'.$artist->slug.'/'.$artist->id.'" >'.$artist->name.'</a>';
 				$artist_names[] = $artist->name;
 				if($artist->type == 'artist') { $artist_original = $artist->name; }
 			}
@@ -329,7 +338,7 @@ class BeatportDiscography_shortcode {
 	 
 			$genre_list = array();
 			foreach ($metadata->genres as $genre) {
-				$genre_list[] = '<a target="_new" href="'.$beatport_url.'genre/'.$genre->slug.'/'.$genre->id.'" >'.$genre->name.'</a>';
+				$genre_list[] = '<a target="_new" href="'.$this->beatport_url.'genre/'.$genre->slug.'/'.$genre->id.'" >'.$genre->name.'</a>';
 			}
 			$genre_output = implode(' ', $genre_list);
 
@@ -350,7 +359,7 @@ class BeatportDiscography_shortcode {
 									<div class="beatport-discography-results-album-artist"><p>Artists: '.$artist_output.'</p></div>
 								</div>
 								<div class="beatport-discography-results-coverart-wrapper">
-									<a target="_new" href="'.$beatport_url.'release/'.$metadata->slug.'/'.$metadata->id.'" data-full-image-url="'.$img500.'">
+									<a target="_new" href="'.$this->beatport_url.'release/'.$metadata->slug.'/'.$metadata->id.'" data-full-image-url="'.$img500.'">
 										<img class="beatport-discography-results-coverart" src="'.$img500.'" alt="'.$artist_names_output.' - '.$metadata->name.'" >
 									</a>
 								</div>';
@@ -367,7 +376,7 @@ class BeatportDiscography_shortcode {
 											</tr>
 										<tr>
 											<td class="beatport-discography-results-meta-data-label">Label</td>
-											<td class="beatport-discography-results-meta-data-value"><a target="_new" href="'.$beatport_url.'/label/'.$metadata->label->slug.'/'.$metadata->label->id.'">'.$metadata->label->name.'</a></td>
+											<td class="beatport-discography-results-meta-data-value"><a target="_new" href="'.$this->beatport_url.'/label/'.$metadata->label->slug.'/'.$metadata->label->id.'">'.$metadata->label->name.'</a></td>
 										</tr>
 										<tr><td class="beatport-discography-results-meta-data-label">Catalogue #</td>
 											<td class="beatport-discography-results-meta-data-value">'.$metadata->catalogNumber.'</td>
@@ -447,42 +456,43 @@ class BeatportDiscography_shortcode {
 		$output = '';
 
 		$urlhost = 'http://' . $this -> get_server_host();
-
-		if($atts['items'] == 'release'){
+		
+		$url = '';
+		if(isset($atts['items']) == 'release'){
 			if($atts['feed'] == 'artist' || $atts['feed'] == 'label'){
 				$url .= 'releases';	
 			}else{
 				$url .= 'beatport/release';
 			}
-		}elseif($atts['items'] == 'track'){
+		}elseif(isset($atts['items']) == 'track'){
 			if($atts['feed'] == 'artist' || $atts['feed'] == 'label'){
 				$url .= 'tracks';	
 			}else{
 				$url .= 'beatport/track';
 			}
-		}elseif ($atts['items'] == 'biography') {
+		}elseif (isset($atts['items']) == 'biography') {
 			$url .= 'artists';
 		}
 		// update here ucword
-		if($atts['feed'] == 'artist'){
+		if(isset($atts['feed']) == 'artist'){
 			$url .= '';
 			$qrystring = '?facets=performerName:' . str_replace(' ', '+', ucwords((trim($atts['artist'])))) . '&sortBy=publishDate%20desc&perPage=150';
 			
-		}elseif($atts['feed'] == 'label'){
+		}elseif(isset($atts['feed']) == 'label'){
 			$url .= '';
 			$qrystring = '?facets=labelName:' . str_replace(' ', '+', ucwords((trim($atts['label'])))) . '&sortBy=publishDate%20desc&perPage=150';
-		}elseif($atts['feed'] == 'id'){
+		}elseif(isset($atts['feed']) == 'id'){
 			$url .= '';
 			$qrystring = '?id=' . str_replace(' ', '+', $atts['id']).'';
 		}
 
-		if($_GET['debug'] == 'y'){
+		if(isset($_GET['debug']) == 'y'){
 			echo $urlhost . $qrystring . '&url=' . $url;
 		}
 
 		$dataArray = $this->getData($urlhost, $qrystring . '&url=' . $url);
 
-		$output .= $this->getRenderedFeed($atts['items'], $atts['feed'], $atts['soundPlayer'], $atts['buylink'], $dataArray);
+		$output .= $this->getRenderedFeed($atts['items'], $atts['feed'], $atts['soundPlayer'] = 'off', $atts['buylink'], $dataArray);
 		return $output;
 
 	}
@@ -490,7 +500,8 @@ class BeatportDiscography_shortcode {
 
 	function get_server_host()
 	{
-		return 'www.federicogiust.com/beatportapi/beatport_api.php';
+		$api_url = $this->beatport_api_proxy;
+		return $api_url;
 	}
 
 	
