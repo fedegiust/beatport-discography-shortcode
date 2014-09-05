@@ -3,8 +3,8 @@
         
         init : function(ed, url) {
         
-        	var popUpURL = url + '/beatport-discography-shortcode-tinymce.html';
-        
+        	var popUpURL = url.replace('/js', '') + '/beatport-discography-shortcode-tinymce.html';
+        	
 			ed.addCommand('BeatportDiscographyShortcodePopUp', function() {
 				ed.windowManager.open({
 					url : popUpURL,
@@ -16,7 +16,7 @@
 
 			ed.addButton('BeatportDiscographyShortcodeButton', {
 				title : 'Beatport Discography Shortcode',
-				image : url + '/beatport-shortcode-button.png',
+				image : url.replace('js', 'image') + '/beatport-shortcode-button.png',
 				cmd : 'BeatportDiscographyShortcodePopUp'
 			});
 		}

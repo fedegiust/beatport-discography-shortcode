@@ -1,8 +1,8 @@
 === Plugin Name ===
 Tags: beatport, discography, artist, dj, digital, electronic, music
 Requires at least: 3.4
-Tested up to: 3.8.1
-Stable tag: 1.3.5
+Tested up to: 4.0
+Stable tag: 1.3.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,25 +77,30 @@ After the plugin is active, there will be a new icon on the text editor toolbar.
 3. Type of catalogue you want:
 * Releases (Default)
 * Tracks
+* Artist Bio (Only available when fetching Artist feed)
 
 4. Additional Options
+* Enable/Disable Sound Player (Only available on tracks catalogue, it will play the sample when clicking on the track cover)
 * Enable/Disable buy on beatport link
 
 One option of each group is required.
 
 This will add a shortcode like this:
 
-[beatport_discography_sc feed="artist" artist="Richie Hawtin" items="track" buylink="on"]
+[beatport_discography_sc feed="artist" artist="Richie Hawtin" items="track" soundplayer="on" buylink="on"]
 
 Shortcodes parameters
 * feed: string with value "artist", "label" or "id"
-* artist: string
-* label: string
-* id: number
+* artist: string in this format "Matthias+Tanzmann"
+* label: string in this format "Moon+Harbour+Recordings"
+* id: the release id as it appears on beatport url (for example: http://www.beatport.com/track/secret-effect-original-mix/4773933 the id would be 4773933)
 * items: string with value "release" or "track"
+* soundplayer: string with values "on" or "off"
 * buylink: string with values "on" or "off"
 
-After you filled out the form, click on insert shortcode and publish the page/post.
+There is a button to test the shortcode before inserting, this will show you a short part of the JSON file.
+
+After you filled out the form, click on insert shortcode and update the page/post.
 
 == Screenshots ==
 
@@ -107,6 +112,11 @@ After you filled out the form, click on insert shortcode and publish the page/po
 6. Public view of the tracks list
 
 == Changelog ==
+
+= 1.3.7 =
+
+* Bug fixes
+* Update so it works with WordPress 4.0
 
 = 1.3.5 =
 

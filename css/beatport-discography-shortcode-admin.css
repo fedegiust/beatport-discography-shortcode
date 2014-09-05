@@ -1,0 +1,91 @@
+html,
+body {
+    font-size: 13px !important;
+    background-color: #fff !important;
+}
+
+.form-stacked {
+    padding-left: 0;
+}
+
+.form-stacked fieldset {
+    border: none;
+    font-size: 13px;
+}
+
+.help-inline,
+.help-block {
+    font-size: 10px;
+}
+
+.form-stacked fieldset legend {
+    font-size: 13px;
+    font-weight: bold;
+    color: #2B6FB6;
+}
+
+.form-stacked span[class*="span"] {
+    display: inline-block;
+}
+
+.form-stacked .beatport-discography-shortcode-actions {
+    margin-left: 0;
+}
+
+.form-stacked div.label {
+    width: auto;
+    text-align: left;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 20px;
+    white-space: normal;
+    color: #404040;
+}
+
+.form-stacked .inputs-list:first-child {
+    padding-top: 0;
+}
+
+.form-stacked .deprecated {
+    font-style: italic;
+    color: orange;
+}
+
+.form-stacked .required {
+    color: red;
+}
+
+.step-2 {
+    display: none;
+}
+
+.step-3 {
+    display: none;
+}
+
+.release-track-id-feed {
+    display: none;
+}
+
+.beatport-discography-shortcode-actions {
+    display: none;
+}
+
+#trycode {
+    display: none;
+    width: 100%;
+}
+
+#preloader_container {
+    display: none;
+    width: 100%;
+    text-align: center;
+}
+
+#results {
+    display: inline-block;
+    width: 100%;
+    height: 100px;
+    overflow-x: scroll;
+}

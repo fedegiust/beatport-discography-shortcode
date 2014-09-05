@@ -3,7 +3,7 @@
 Plugin Name: Beatport Discography shortcode
 Plugin URI: http://wordpress.org/plugins/beatport-discography-shortcode/
 Description: Embed Beatport Discography using shortcodes
-Version: 1.3.5
+Version: 1.3.7
 Author: Federico Giust
 Author URI: http://www.tora-soft.com
 License: GPL2
@@ -24,7 +24,7 @@ if (!class_exists('BeatportDiscography_shortcode')):
 
 class BeatportDiscography_shortcode {
 
-	var $plugin_version = '135'; // version 1.3.5
+	var $plugin_version = '137'; // version 1.3.7
 	public $beatport_url = 'http://www.beatport.com/';
 	public $beatport_api_proxy = 'www.federicogiust.com/beatportapi/beatport_api.php';
 
@@ -60,7 +60,7 @@ class BeatportDiscography_shortcode {
 	*/
 	function output_css()
 	{
-		wp_register_style('BeatportDiscographyShortcode', plugins_url('beatport-discography-shortcode.css', __FILE__));
+		wp_register_style('BeatportDiscographyShortcode', plugins_url('css/beatport-discography-shortcode.css', __FILE__));
 		wp_enqueue_style('BeatportDiscographyShortcode');
 	}
 
@@ -70,7 +70,7 @@ class BeatportDiscography_shortcode {
 	*/
 	function output_js()
 	{
-		wp_register_script('BeatportDiscographyShortcode', plugins_url('beatport-discography-shortcode.js', __FILE__), array( 'jquery' ));
+		wp_register_script('BeatportDiscographyShortcode', plugins_url('js/beatport-discography-shortcode.js', __FILE__), array( 'jquery' ));
 		wp_enqueue_script('BeatportDiscographyShortcode');
 
 	}
@@ -172,7 +172,7 @@ class BeatportDiscography_shortcode {
 	* $feed - Wich feed are we using, artist or label
 	* $dataArray - Array with the data we got from the API
 	*/
-	function getRenderedFeed($items, $feed, $soundPlayer, $buylink = 'on', array $dataArray ){
+	function getRenderedFeed($items, $feed, $soundplayer = 'off', $buylink = 'on', array $dataArray ){
 
 		$output = '';
 		$output .= '<div id="beatport-discography-results">' . PHP_EOL;
@@ -245,11 +245,11 @@ class BeatportDiscography_shortcode {
 					$output .= '<li class="beatport-discography-results-">' . PHP_EOL;
 					$output .= '<div id="release' . $dataArray['results'][$i] -> catalogNumber . '" class="beatport-discography-results-release">' . PHP_EOL;
 					$output .= '<div class="beatport-discography-results-art">' . PHP_EOL;
-					if ( $soundPlayer == 'on' ){
+					if ( $soundplayer == 'on' ){
 						$output .= '<a href="http://geo-samples.beatport.com/lofi/' . $dataArray['results'][$i] -> id . '.LOFI.mp3" class="inline-playable" >' . PHP_EOL;
 					}
 					$output .= '<img src="' . $dataArray['results'][$i] -> images -> medium -> url . '"/>' . PHP_EOL;
-					if ( $soundPlayer == 'on' ){
+					if ( $soundplayer == 'on' ){
 						$output .= '</a>' . PHP_EOL;			
 					}
 					$output .= '</div>' . PHP_EOL;
@@ -447,7 +447,7 @@ class BeatportDiscography_shortcode {
 			'label' => '',
 			'id' => '',
    			'items' => '',
-   			'soundPlayer' => '',
+   			'soundplayer' => '',
    			'buylink' => '',
    			'perpage' => ''
 		), $atts ) );
@@ -458,41 +458,49 @@ class BeatportDiscography_shortcode {
 		$urlhost = 'http://' . $this -> get_server_host();
 		
 		$url = '';
-		if(isset($atts['items']) == 'release'){
+
+		if( !array_key_exists('items', $atts)) {
+			$atts['items'] = 'release';
+		}
+
+		if( isset($atts['items']) && $atts['items'] == 'release'){	
 			if($atts['feed'] == 'artist' || $atts['feed'] == 'label'){
 				$url .= 'releases';	
 			}else{
 				$url .= 'beatport/release';
 			}
-		}elseif(isset($atts['items']) == 'track'){
+		}elseif(isset($atts['items']) && $atts['items'] == 'track'){
 			if($atts['feed'] == 'artist' || $atts['feed'] == 'label'){
 				$url .= 'tracks';	
 			}else{
 				$url .= 'beatport/track';
 			}
-		}elseif (isset($atts['items']) == 'biography') {
+		}elseif (isset($atts['items']) && $atts['items'] == 'biography') {
 			$url .= 'artists';
 		}
 		// update here ucword
-		if(isset($atts['feed']) == 'artist'){
+		if(isset($atts['feed']) && $atts['feed'] == 'artist'){
 			$url .= '';
 			$qrystring = '?facets=performerName:' . str_replace(' ', '+', ucwords((trim($atts['artist'])))) . '&sortBy=publishDate%20desc&perPage=150';
 			
-		}elseif(isset($atts['feed']) == 'label'){
+		}elseif(isset($atts['feed']) && $atts['feed'] == 'label'){
 			$url .= '';
 			$qrystring = '?facets=labelName:' . str_replace(' ', '+', ucwords((trim($atts['label'])))) . '&sortBy=publishDate%20desc&perPage=150';
-		}elseif(isset($atts['feed']) == 'id'){
+		}elseif(isset($atts['feed']) && $atts['feed'] == 'id'){
 			$url .= '';
 			$qrystring = '?id=' . str_replace(' ', '+', $atts['id']).'';
 		}
 
-		if(isset($_GET['debug']) == 'y'){
+		if(isset($_GET['debug']) && $_GET['debug'] == 'y'){
+			echo '<pre>';
+			print_r($atts);
 			echo $urlhost . $qrystring . '&url=' . $url;
+			echo '</pre>';
 		}
 
 		$dataArray = $this->getData($urlhost, $qrystring . '&url=' . $url);
 
-		$output .= $this->getRenderedFeed($atts['items'], $atts['feed'], $atts['soundPlayer'] = 'off', $atts['buylink'], $dataArray);
+		$output .= $this->getRenderedFeed($atts['items'], $atts['feed'], $atts['soundplayer'], $atts['buylink'], $dataArray);
 		return $output;
 
 	}
@@ -504,7 +512,6 @@ class BeatportDiscography_shortcode {
 		return $api_url;
 	}
 
-	
 	// TinyMCE Button
 
 	// Set up our TinyMCE button
@@ -527,7 +534,7 @@ class BeatportDiscography_shortcode {
 
 	// Register our TinyMCE Script
 	function add_tinymce_button_script($plugin_array) {
-		$plugin_array['BeatportDiscographyShortcode'] = plugins_url('tinymcebutton.js', __FILE__);
+		$plugin_array['BeatportDiscographyShortcode'] = plugins_url('js/tinymcebutton.js', __FILE__);
 		return $plugin_array;
 	}
 
