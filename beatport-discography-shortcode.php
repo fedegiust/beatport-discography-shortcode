@@ -144,7 +144,6 @@ class BeatportDiscography_shortcode {
 			}
 			$i++;
 		}
-
   		$output .= '</div>';
 		return $output;
 	}
@@ -194,7 +193,7 @@ class BeatportDiscography_shortcode {
 					$output .= '<div id="release' . $dataArray['results'][$i] -> catalogNumber . '" class="beatport-discography-results-release">' . PHP_EOL;
 					$output .= '<div class="beatport-discography-results-art">' . PHP_EOL;
 					$output .= '<a href="https://www.beatport.com/release/' . $dataArray['results'][$i] -> slug . '/' . $dataArray['results'][$i] -> id . '" target="_new">' . PHP_EOL;
-					$output .= '<img src="' . $dataArray['results'][$i] -> images -> medium -> url . '"/>' . PHP_EOL;
+					$output .= '<img src="' . str_replace("{hq}", "", str_replace("{w}", "60", str_replace("{h}", "60", $dataArray['results'][$i]->dynamicImages->main->url)))  . '"/>' . PHP_EOL;
 					$output .= '</a>' . PHP_EOL;
 					$output .= '</div>' . PHP_EOL;
 					$output .= '<div class="beatport-discography-results-releaseinfo">' . PHP_EOL;
@@ -497,6 +496,7 @@ class BeatportDiscography_shortcode {
 			echo $urlhost . $qrystring . '&url=' . $url;
 			echo '</pre>';
 		}
+var_dump(extension_loaded('OAuth'));
 
 		$dataArray = $this->getData($urlhost, $qrystring . '&url=' . $url);
 
